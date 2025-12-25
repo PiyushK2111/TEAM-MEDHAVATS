@@ -1,0 +1,3545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChronosAI Professional - Behavioral Productivity Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== CSS RESET & VARIABLES ==================== */
+        :root {
+            /* Neo-Noir Color Palette */
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-card: rgba(30, 41, 59, 0.5);
+            
+            /* Accent Colors */
+            --sage-400: #4ade80;
+            --sage-500: #22c55e;
+            --sage-600: #16a34a;
+            --emerald-400: #34d399;
+            --emerald-500: #10b981;
+            --emerald-600: #059669;
+            
+            /* Urgency Colors */
+            --red-400: #f87171;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --orange-400: #fb923c;
+            --orange-500: #f97316;
+            --yellow-400: #facc15;
+            --yellow-500: #eab308;
+            
+            /* Neutral Colors */
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            
+            /* Other */
+            --purple-400: #c084fc;
+            --purple-500: #a855f7;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            
+            /* Typography */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-glow-sage: 0 0 20px rgba(34, 197, 94, 0.3);
+            --shadow-glow-red: 0 0 20px rgba(239, 68, 68, 0.3);
+            
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-base: 200ms ease;
+            --transition-slow: 300ms ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--slate-900) 0%, var(--bg-secondary) 50%, #1a1a2e 100%);
+            color: var(--slate-300);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-white { color: white; }
+        .text-slate-400 { color: var(--slate-400); }
+        .text-slate-500 { color: var(--slate-500); }
+        .text-sage-400 { color: var(--sage-400); }
+        .text-red-400 { color: var(--red-400); }
+        .text-yellow-400 { color: var(--yellow-400); }
+        .text-purple-400 { color: var(--purple-400); }
+        .rounded-lg { border-radius: var(--radius-lg); }
+        .rounded-xl { border-radius: var(--radius-xl); }
+        .rounded-2xl { border-radius: var(--radius-2xl); }
+        .rounded-full { border-radius: var(--radius-full); }
+        .overflow-hidden { overflow: hidden; }
+        .overflow-y-auto { overflow-y: auto; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        .cursor-pointer { cursor: pointer; }
+        .select-none { user-select: none; }
+        .transition-all { transition: all var(--transition-base); }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px var(--sage-500), 0 0 10px var(--sage-500); }
+            50% { box-shadow: 0 0 20px var(--sage-500), 0 0 30px var(--sage-500); }
+        }
+
+        @keyframes progressFill {
+            from { width: 0; }
+        }
+
+        @keyframes gaugeAnimation {
+            from { stroke-dashoffset: 502.65; }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.3s ease forwards; }
+        .animate-fade-in-up { animation: fadeInUp 0.4s ease forwards; }
+        .animate-fade-in-down { animation: fadeInDown 0.4s ease forwards; }
+        .animate-slide-in-right { animation: slideInRight 0.4s ease forwards; }
+        .animate-slide-in-left { animation: slideInLeft 0.4s ease forwards; }
+        .animate-scale-in { animation: scaleIn 0.3s ease forwards; }
+        .animate-pulse { animation: pulse 2s infinite; }
+        .animate-shake { animation: shake 0.5s ease; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .animate-bounce { animation: bounce 1s ease infinite; }
+        .animate-glow { animation: glow 2s ease infinite; }
+
+        /* ==================== COMPONENTS ==================== */
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius-xl);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            outline: none;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--sage-600) 0%, var(--emerald-600) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--sage-500) 0%, var(--emerald-500) 100%);
+            box-shadow: var(--shadow-glow-sage);
+        }
+
+        .btn-secondary {
+            background: var(--slate-700);
+            color: var(--slate-300);
+            border: 1px solid var(--slate-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--slate-600);
+            border-color: var(--slate-500);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--red-600) 0%, var(--red-500) 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            box-shadow: var(--shadow-glow-red);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--slate-400);
+        }
+
+        .btn-ghost:hover {
+            background: var(--slate-700);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border-radius: var(--radius-lg);
+        }
+
+        /* Form Elements */
+        .input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-family: inherit;
+            color: white;
+            background: var(--slate-700);
+            border: 1px solid var(--slate-600);
+            border-radius: var(--radius-lg);
+            outline: none;
+            transition: all var(--transition-base);
+        }
+
+        .input:focus {
+            border-color: var(--sage-500);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .input::placeholder {
+            color: var(--slate-500);
+        }
+
+        .input-lg {
+            padding: 1rem 1.25rem;
+            font-size: 1.125rem;
+        }
+
+        .select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.25rem;
+            padding-right: 2.5rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--slate-500);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+
+        .checkbox.checked {
+            background: var(--sage-500);
+            border-color: var(--sage-500);
+        }
+
+        .checkbox svg {
+            width: 0.75rem;
+            height: 0.75rem;
+            color: white;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .checkbox.checked svg {
+            opacity: 1;
+        }
+
+        /* Range Slider */
+        .range-slider {
+            width: 100%;
+            height: 0.75rem;
+            background: var(--slate-700);
+            border-radius: var(--radius-full);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: linear-gradient(135deg, var(--sage-500), var(--emerald-500));
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-base);
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 1.5rem;
+            height: 1.5rem;
+            background: linear-gradient(135deg, var(--sage-500), var(--emerald-500));
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Toggle Switch */
+        .toggle {
+            width: 3rem;
+            height: 1.5rem;
+            background: var(--slate-600);
+            border-radius: var(--radius-full);
+            position: relative;
+            cursor: pointer;
+            transition: background var(--transition-base);
+        }
+
+        .toggle.active {
+            background: var(--sage-500);
+        }
+
+        .toggle-knob {
+            position: absolute;
+            top: 0.125rem;
+            left: 0.125rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            background: white;
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-base);
+        }
+
+        .toggle.active .toggle-knob {
+            transform: translateX(1.5rem);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--slate-700);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg);
+        }
+
+        .card-hover:hover {
+            border-color: var(--sage-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: var(--radius-full);
+        }
+
+        .badge-sage {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--sage-400);
+        }
+
+        .badge-red {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red-400);
+        }
+
+        .badge-yellow {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--yellow-400);
+        }
+
+        .badge-purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--purple-400);
+        }
+
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue-400);
+        }
+
+        .badge-slate {
+            background: var(--slate-600);
+            color: var(--slate-300);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: var(--slate-700);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--sage-500), var(--emerald-500));
+            border-radius: var(--radius-full);
+            transition: width 0.5s ease;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip-content {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-0.5rem);
+            padding: 0.5rem 0.75rem;
+            background: var(--slate-700);
+            color: white;
+            font-size: 0.75rem;
+            border-radius: var(--radius-md);
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-fast);
+            z-index: 1000;
+        }
+
+        .tooltip:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ==================== LAYOUT ==================== */
+        
+        /* App Container */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--slate-700);
+            padding: var(--spacing-lg);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 4rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--slate-700);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--spacing-lg);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: var(--spacing-lg);
+            overflow-y: auto;
+            padding-bottom: 120px;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 320px;
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(12px);
+            border-left: 1px solid var(--slate-700);
+            padding: var(--spacing-lg);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        /* ==================== ONBOARDING ==================== */
+        
+        .onboarding-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .onboarding-card {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--sage-400), var(--emerald-400));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            color: var(--slate-400);
+            margin-top: var(--spacing-sm);
+        }
+
+        .progress-indicator {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--slate-500);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .question-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--slate-700);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-xl);
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .option-button {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            text-align: left;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid var(--slate-600);
+            border-radius: var(--radius-xl);
+            color: var(--slate-200);
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .option-button:hover {
+            background: var(--slate-700);
+            border-color: var(--sage-500);
+            transform: translateX(8px);
+        }
+
+        .slider-container {
+            padding: var(--spacing-md) 0;
+        }
+
+        .slider-value {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--sage-400);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--slate-400);
+            margin-top: var(--spacing-sm);
+        }
+
+        /* ==================== DASHBOARD ==================== */
+        
+        .tab-bar {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--slate-800);
+            padding: 0.25rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--slate-400);
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .tab-button:hover {
+            color: white;
+        }
+
+        .tab-button.active {
+            background: var(--sage-500);
+            color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        /* ==================== COMMAND BAR ==================== */
+        
+        .command-bar {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 700px;
+            padding: 0 var(--spacing-md);
+            z-index: 100;
+        }
+
+        .command-bar-glow {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.2));
+            border-radius: var(--radius-2xl);
+            filter: blur(20px);
+        }
+
+        .command-bar-inner {
+            position: relative;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--slate-600);
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+        }
+
+        .command-bar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--slate-700);
+        }
+
+        .command-bar-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--sage-400);
+        }
+
+        .command-bar-hint {
+            font-size: 0.75rem;
+            color: var(--slate-500);
+        }
+
+        .command-bar-content {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md);
+            gap: var(--spacing-md);
+        }
+
+        .command-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--sage-400);
+            flex-shrink: 0;
+        }
+
+        .command-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            font-size: 1.125rem;
+            color: white;
+            outline: none;
+        }
+
+        .command-input::placeholder {
+            color: var(--slate-500);
+        }
+
+        .command-spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--sage-500);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* ==================== INERTIA GAUGE ==================== */
+        
+        .inertia-gauge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-lg) 0;
+        }
+
+        .gauge-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+
+        .gauge-svg {
+            transform: rotate(-90deg);
+        }
+
+        .gauge-bg {
+            fill: transparent;
+            stroke: var(--slate-700);
+            stroke-width: 12;
+        }
+
+        .gauge-fill {
+            fill: transparent;
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease, stroke 0.5s ease;
+        }
+
+        .gauge-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .gauge-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .gauge-label {
+            font-size: 0.75rem;
+            color: var(--slate-400);
+        }
+
+        /* ==================== TASK CARDS ==================== */
+        
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .task-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-md);
+            border-left: 4px solid var(--slate-600);
+            transition: all var(--transition-base);
+        }
+
+        .task-card:hover {
+            background: rgba(30, 41, 59, 0.7);
+        }
+
+        .task-card.priority-low { border-left-color: var(--slate-600); }
+        .task-card.priority-medium { border-left-color: var(--yellow-500); }
+        .task-card.priority-high { border-left-color: var(--orange-500); }
+        .task-card.priority-critical { border-left-color: var(--red-500); }
+
+        .task-card.shake {
+            animation: shake 0.5s ease;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-title-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .task-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .task-status-dot.pending { background: var(--slate-600); }
+        .task-status-dot.in-progress { background: var(--blue-500); }
+        .task-status-dot.completed { background: var(--sage-500); }
+        .task-status-dot.overdue { background: var(--red-500); }
+
+        .task-title {
+            font-weight: 600;
+            color: white;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: 0.875rem;
+            color: var(--slate-400);
+        }
+
+        .task-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .task-meta-item svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .task-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .status-select {
+            padding: 0.375rem 2rem 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .subtasks-section {
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--slate-700);
+        }
+
+        .subtasks-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--sage-400);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .subtasks-toggle:hover {
+            color: var(--sage-300);
+        }
+
+        .subtasks-toggle svg {
+            width: 16px;
+            height: 16px;
+            transition: transform var(--transition-base);
+        }
+
+        .subtasks-toggle.open svg {
+            transform: rotate(90deg);
+        }
+
+        .subtasks-list {
+            margin-top: var(--spacing-sm);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .subtask-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: var(--radius-lg);
+        }
+
+        .subtask-item.easy-win {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .subtask-text {
+            flex: 1;
+            font-size: 0.875rem;
+        }
+
+        .subtask-text.completed {
+            color: var(--slate-500);
+            text-decoration: line-through;
+        }
+
+        .subtask-duration {
+            font-size: 0.75rem;
+            color: var(--slate-500);
+        }
+
+        .subtask-easy-win-badge {
+            font-size: 0.75rem;
+            color: var(--sage-400);
+        }
+
+        /* ==================== PROFILE SECTION ==================== */
+        
+        .profile-section {
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .profile-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--slate-300);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .profile-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-xs) 0;
+        }
+
+        .profile-stat-label {
+            font-size: 0.75rem;
+            color: var(--slate-400);
+        }
+
+        .profile-stat-value {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .profile-bar-container {
+            margin-top: var(--spacing-xs);
+        }
+
+        .profile-bar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-bar {
+            height: 0.5rem;
+            background: var(--slate-600);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .profile-bar-fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+            transition: width 0.5s ease;
+        }
+
+        .profile-bar-fill.focus {
+            background: linear-gradient(90deg, var(--sage-500), var(--emerald-500));
+        }
+
+        .profile-bar-fill.inertia {
+            background: linear-gradient(90deg, var(--orange-500), var(--red-500));
+        }
+
+        /* ==================== AI INSIGHTS ==================== */
+        
+        .insights-section {
+            margin-top: var(--spacing-lg);
+        }
+
+        .insights-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--slate-300);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .insight-card {
+            padding: var(--spacing-sm);
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .insight-text {
+            font-size: 0.75rem;
+            color: var(--sage-300);
+            line-height: 1.5;
+        }
+
+        /* ==================== QUICK STATS ==================== */
+        
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .stat-card {
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-sm);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--slate-400);
+        }
+
+        /* ==================== ALARM SETTINGS ==================== */
+        
+        .alarm-section {
+            margin-top: var(--spacing-lg);
+        }
+
+        .alarm-section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .alarm-section-header svg {
+            width: 20px;
+            height: 20px;
+            color: var(--sage-400);
+        }
+
+        .alarm-section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .alarm-warning {
+            padding: var(--spacing-sm);
+            background: rgba(251, 146, 60, 0.1);
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .alarm-warning-text {
+            font-size: 0.875rem;
+            color: var(--orange-400);
+        }
+
+        .alarm-form {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .alarm-time-input {
+            padding: var(--spacing-sm) var(--spacing-md);
+        }
+
+        .alarm-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .alarm-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md);
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: var(--radius-lg);
+        }
+
+        .alarm-item-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .alarm-time {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .alarm-item-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        /* ==================== CALENDAR INTEGRATION ==================== */
+        
+        .calendar-section {
+            margin-top: var(--spacing-lg);
+        }
+
+        .calendar-section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .calendar-section-header svg {
+            width: 20px;
+            height: 20px;
+            color: var(--sage-400);
+        }
+
+        .calendar-section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .calendar-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid var(--slate-600);
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .calendar-btn:hover {
+            border-color: var(--sage-500);
+            transform: translateY(-2px);
+        }
+
+        .calendar-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calendar-icon.google {
+            background: white;
+        }
+
+        .calendar-icon.apple {
+            background: linear-gradient(135deg, var(--orange-400), var(--red-500));
+        }
+
+        .calendar-btn-text {
+            text-align: left;
+        }
+
+        .calendar-btn-title {
+            font-weight: 500;
+            color: white;
+        }
+
+        .calendar-btn-subtitle {
+            font-size: 0.75rem;
+            color: var(--slate-400);
+        }
+
+        .synced-events {
+            margin-top: var(--spacing-md);
+        }
+
+        .synced-events-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--slate-400);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-sm);
+            background: rgba(51, 65, 85, 0.5);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .event-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .event-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .event-dot.hard-stop {
+            background: var(--red-500);
+        }
+
+        .event-dot.normal {
+            background: var(--blue-500);
+        }
+
+        .event-title {
+            font-weight: 500;
+            color: white;
+        }
+
+        .event-time {
+            font-size: 0.75rem;
+            color: var(--slate-400);
+        }
+
+        /* ==================== NOTIFICATIONS ==================== */
+        
+        .notification-btn {
+            position: relative;
+            padding: var(--spacing-sm);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--slate-400);
+            transition: color var(--transition-base);
+        }
+
+        .notification-btn:hover {
+            color: white;
+        }
+
+        .notification-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 18px;
+            height: 18px;
+            background: var(--red-500);
+            border-radius: 50%;
+            font-size: 0.625rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            background: var(--slate-800);
+            border: 1px solid var(--slate-700);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            z-index: 1000;
+            margin-top: var(--spacing-sm);
+        }
+
+        .notification-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--slate-700);
+        }
+
+        .notification-header h3 {
+            font-weight: 600;
+            color: white;
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-empty {
+            padding: var(--spacing-xl);
+            text-align: center;
+            color: var(--slate-500);
+        }
+
+        .notification-item {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            cursor: pointer;
+            transition: background var(--transition-base);
+        }
+
+        .notification-item:hover {
+            background: rgba(51, 65, 85, 0.5);
+        }
+
+        .notification-item.unread {
+            background: rgba(51, 65, 85, 0.3);
+        }
+
+        .notification-content {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .notification-dot.info {
+            background: var(--sage-500);
+        }
+
+        .notification-dot.warning {
+            background: var(--yellow-500);
+        }
+
+        .notification-dot.urgent {
+            background: var(--red-500);
+        }
+
+        .notification-text {
+            font-size: 0.875rem;
+            color: white;
+        }
+
+        .notification-time {
+            font-size: 0.75rem;
+            color: var(--slate-500);
+            margin-top: 0.25rem;
+        }
+
+        /* ==================== MODALS ==================== */
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: var(--spacing-md);
+        }
+
+        .modal {
+            background: var(--slate-800);
+            border: 1px solid var(--slate-600);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-xl);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .modal-text {
+            color: var(--slate-400);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        .math-problem {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--sage-400);
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .math-input {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        /* ==================== TIMELINE VIEW ==================== */
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .timeline-filters {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .filter-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--slate-400);
+            background: var(--slate-700);
+            border: 1px solid var(--slate-600);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: white;
+            border-color: var(--sage-500);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-2xl);
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            color: var(--slate-600);
+            margin: 0 auto var(--spacing-md);
+        }
+
+        .empty-state-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--slate-400);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .empty-state-text {
+            color: var(--slate-500);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        
+        @media (max-width: 1200px) {
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .header {
+                padding: 0 var(--spacing-md);
+            }
+
+            .tab-bar {
+                display: none;
+            }
+
+            .content-area {
+                padding: var(--spacing-md);
+            }
+
+            .command-bar {
+                bottom: var(--spacing-md);
+                max-width: 100%;
+                padding: 0 var(--spacing-sm);
+            }
+
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .alarm-form {
+                flex-direction: column;
+            }
+
+            .alarm-form .input,
+            .alarm-form .select,
+            .alarm-form .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- App Root -->
+    <div id="app"></div>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        
+        const createStore = (reducer, initialState) => {
+            let state = initialState;
+            let listeners = [];
+
+            const getState = () => state;
+
+            const dispatch = (action) => {
+                state = reducer(state, action);
+                listeners.forEach(listener => listener(state));
+            };
+
+            const subscribe = (listener) => {
+                listeners.push(listener);
+                return () => {
+                    listeners = listeners.filter(l => l !== listener);
+                };
+            };
+
+            return { getState, dispatch, subscribe };
+        };
+
+        // Initial State
+        const initialState = {
+            profile: null,
+            tasks: [],
+            alarms: [],
+            calendarEvents: [],
+            notifications: [],
+            inertiaScore: 50,
+            currentView: 'onboarding', // 'onboarding', 'dashboard'
+            onboardingStep: 0,
+            soundEnabled: true,
+            activeTab: 'timeline' // 'timeline', 'manual', 'settings'
+        };
+
+        // Reducer
+        const appReducer = (state, action) => {
+            switch (action.type) {
+                case 'SET_PROFILE':
+                    return { ...state, profile: action.payload };
+                case 'UPDATE_PROFILE':
+                    return { ...state, profile: { ...state.profile, ...action.payload } };
+                case 'ADD_TASK':
+                    return { ...state, tasks: [...state.tasks, action.payload] };
+                case 'UPDATE_TASK':
+                    return {
+                        ...state,
+                        tasks: state.tasks.map(t =>
+                            t.id === action.payload.id ? { ...t, ...action.payload.updates } : t
+                        )
+                    };
+                case 'DELETE_TASK':
+                    return { ...state, tasks: state.tasks.filter(t => t.id !== action.payload) };
+                case 'ADD_ALARM':
+                    return { ...state, alarms: [...state.alarms, action.payload] };
+                case 'UPDATE_ALARM':
+                    return {
+                        ...state,
+                        alarms: state.alarms.map(a =>
+                            a.id === action.payload.id ? { ...a, ...action.payload.updates } : a
+                        )
+                    };
+                case 'DELETE_ALARM':
+                    return { ...state, alarms: state.alarms.filter(a => a.id !== action.payload) };
+                case 'ADD_CALENDAR_EVENT':
+                    return { ...state, calendarEvents: [...state.calendarEvents, action.payload] };
+                case 'ADD_NOTIFICATION':
+                    return { ...state, notifications: [action.payload, ...state.notifications] };
+                case 'MARK_NOTIFICATION_READ':
+                    return {
+                        ...state,
+                        notifications: state.notifications.map(n =>
+                            n.id === action.payload ? { ...n, read: true } : n
+                        )
+                    };
+                case 'UPDATE_INERTIA_SCORE':
+                    return { ...state, inertiaScore: Math.max(0, Math.min(100, action.payload)) };
+                case 'SET_VIEW':
+                    return { ...state, currentView: action.payload };
+                case 'SET_ONBOARDING_STEP':
+                    return { ...state, onboardingStep: action.payload };
+                case 'SET_ACTIVE_TAB':
+                    return { ...state, activeTab: action.payload };
+                case 'TOGGLE_SOUND':
+                    return { ...state, soundEnabled: action.payload };
+                default:
+                    return state;
+            }
+        };
+
+        // Create Store
+        const store = createStore(appReducer, initialState);
+
+        // ==================== SOUND ENGINE ====================
+        
+        class SoundEngine {
+            constructor() {
+                this.audioContext = null;
+            }
+
+            getContext() {
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                return this.audioContext;
+            }
+
+            playNotification(severity) {
+                if (!store.getState().soundEnabled) return;
+                
+                const ctx = this.getContext();
+                const frequencies = { info: 440, warning: 660, urgent: 880 };
+                const durations = { info: 0.1, warning: 0.2, urgent: 0.3 };
+                const patterns = { info: 1, warning: 2, urgent: 3 };
+
+                const playBeep = (delay) => {
+                    setTimeout(() => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.frequency.value = frequencies[severity];
+                        osc.type = severity === 'urgent' ? 'sawtooth' : 'sine';
+                        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + durations[severity]);
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + durations[severity]);
+                    }, delay);
+                };
+
+                for (let i = 0; i < patterns[severity]; i++) {
+                    playBeep(i * 200);
+                }
+            }
+
+            playSuccess() {
+                if (!store.getState().soundEnabled) return;
+                
+                const ctx = this.getContext();
+                const notes = [523.25, 659.25, 783.99];
+                notes.forEach((freq, i) => {
+                    setTimeout(() => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.frequency.value = freq;
+                        osc.type = 'sine';
+                        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + 0.2);
+                    }, i * 100);
+                });
+            }
+        }
+
+        const soundEngine = new SoundEngine();
+
+        // ==================== AI SCHEDULE ENGINE ====================
+        
+        const AIScheduleEngine = {
+            generateMicroBreakdown(task, profile) {
+                const subTaskCount = Math.max(3, Math.floor(profile.laziness * 7));
+                const easyWinDuration = 2;
+                const regularDuration = Math.floor((task.duration - easyWinDuration * 2) / (subTaskCount - 2));
+
+                const subTasks = [];
+                const taskPhrases = [
+                    `Open ${task.title} document`,
+                    `Review first section`,
+                    `Make initial notes`,
+                    `Draft key points`,
+                    `Expand on main ideas`,
+                    `Review and refine`,
+                    `Final polish`
+                ];
+
+                for (let i = 0; i < subTaskCount; i++) {
+                    const isEasyWin = i === 0 || i === Math.floor(subTaskCount / 2);
+                    subTasks.push({
+                        id: `${task.id}-sub-${i}`,
+                        title: taskPhrases[i % taskPhrases.length],
+                        duration: isEasyWin ? easyWinDuration : regularDuration,
+                        isEasyWin,
+                        completed: false
+                    });
+                }
+
+                return subTasks;
+            },
+
+            calculateBufferTime(task, profile) {
+                const baseBuffer = { low: 5, medium: 10, high: 20 };
+                const lazinessMultiplier = 1 + profile.laziness;
+                return Math.round(baseBuffer[task.cognitiveLoad] * lazinessMultiplier);
+            },
+
+            determineNudgeStyle(profile) {
+                if (profile.laziness > 0.7 && profile.snoozeFactor > 0.6) return 'aggressive';
+                if (profile.laziness > 0.4 || profile.snoozeFactor > 0.4) return 'firm';
+                return 'gentle';
+            },
+
+            optimizeSchedule(tasks, profile, events) {
+                const peakHour = parseInt(profile.peakEnergy.split(':')[0]);
+                const sortedTasks = [...tasks].sort((a, b) => {
+                    const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
+                    return priorityOrder[b.priority] - priorityOrder[a.priority];
+                });
+
+                let currentTime = new Date();
+                currentTime.setHours(peakHour, 0, 0, 0);
+
+                return sortedTasks.map(task => {
+                    const hasConflict = events.some(event => {
+                        const taskEnd = new Date(currentTime.getTime() + task.duration * 60000);
+                        return currentTime < event.end && taskEnd > event.start;
+                    });
+
+                    if (hasConflict && profile.laziness > 0.5) {
+                        const conflictingEvent = events.find(event => {
+                            const taskEnd = new Date(currentTime.getTime() + task.duration * 60000);
+                            return currentTime < event.end && taskEnd > event.start;
+                        });
+                        if (conflictingEvent) {
+                            currentTime = new Date(conflictingEvent.start.getTime() - 15 * 60000);
+                        }
+                    }
+
+                    const bufferTime = this.calculateBufferTime(task, profile);
+                    const scheduledTask = {
+                        ...task,
+                        scheduledTime: new Date(currentTime),
+                        bufferTime,
+                        subTasks: profile.laziness > 0.6 ? this.generateMicroBreakdown(task, profile) : undefined
+                    };
+
+                    currentTime = new Date(currentTime.getTime() + (task.duration + bufferTime) * 60000);
+
+                    return scheduledTask;
+                });
+            },
+
+            generateBehavioralAudit(tasks, profile) {
+                const audits = [];
+                const totalDeepWork = tasks.reduce((sum, t) => sum + (t.cognitiveLoad === 'high' ? t.duration : 0), 0);
+
+                if (totalDeepWork > 180 && profile.laziness > 0.5) {
+                    audits.push(
+                        `I see you've planned ${Math.round(totalDeepWork / 60)} hours of deep work. Based on your ${Math.round(profile.laziness * 100)}% Laziness Score, I suggest adding 20-minute breaks every 90 minutes.`
+                    );
+                }
+
+                if (profile.focus < 0.4 && tasks.some(t => t.duration > 60)) {
+                    audits.push(
+                        `Your focus duration suggests breaking tasks longer than 1 hour into smaller chunks. Consider the Pomodoro technique.`
+                    );
+                }
+
+                const eveningTasks = tasks.filter(t => {
+                    const hour = t.scheduledTime?.getHours() || 0;
+                    return hour >= 20;
+                });
+
+                if (eveningTasks.length > 0 && profile.chronotype === 'morning-lark') {
+                    audits.push(
+                        `Warning: You've scheduled ${eveningTasks.length} task(s) in the evening, but your chronotype suggests you're most productive in the morning.`
+                    );
+                }
+
+                return audits;
+            }
+        };
+
+        // ==================== NATURAL LANGUAGE PARSER ====================
+        
+        const parseNaturalLanguage = (text) => {
+            const lowerText = text.toLowerCase();
+            
+            const timePatterns = [
+                { 
+                    regex: /by (\d{1,2})\s*(am|pm)/i, 
+                    handler: (m) => {
+                        let hour = parseInt(m[1]);
+                        if (m[2].toLowerCase() === 'pm' && hour !== 12) hour += 12;
+                        if (m[2].toLowerCase() === 'am' && hour === 12) hour = 0;
+                        const deadline = new Date();
+                        deadline.setHours(hour, 0, 0, 0);
+                        return deadline;
+                    }
+                },
+                { 
+                    regex: /by (\d{1,2}):(\d{2})/i, 
+                    handler: (m) => {
+                        const deadline = new Date();
+                        deadline.setHours(parseInt(m[1]), parseInt(m[2]), 0, 0);
+                        return deadline;
+                    }
+                },
+                { 
+                    regex: /in (\d+) hours?/i, 
+                    handler: (m) => {
+                        const deadline = new Date();
+                        deadline.setHours(deadline.getHours() + parseInt(m[1]));
+                        return deadline;
+                    }
+                },
+                { 
+                    regex: /tomorrow/i, 
+                    handler: () => {
+                        const deadline = new Date();
+                        deadline.setDate(deadline.getDate() + 1);
+                        deadline.setHours(9, 0, 0, 0);
+                        return deadline;
+                    }
+                }
+            ];
+
+            let deadline = new Date();
+            deadline.setHours(deadline.getHours() + 4);
+
+            for (const pattern of timePatterns) {
+                const match = text.match(pattern.regex);
+                if (match) {
+                    deadline = pattern.handler(match);
+                    break;
+                }
+            }
+
+            let priority = 'medium';
+            if (lowerText.includes('urgent') || lowerText.includes('critical') || lowerText.includes('asap')) {
+                priority = 'critical';
+            } else if (lowerText.includes('important') || lowerText.includes('high priority')) {
+                priority = 'high';
+            } else if (lowerText.includes('when possible') || lowerText.includes('low priority')) {
+                priority = 'low';
+            }
+
+            const title = text
+                .replace(/by \d{1,2}(:\d{2})?\s*(am|pm)?/gi, '')
+                .replace(/in \d+ hours?/gi, '')
+                .replace(/tomorrow/gi, '')
+                .replace(/urgent|critical|asap|important|high priority|low priority|when possible/gi, '')
+                .replace(/i need to|i have to|i want to|i should/gi, '')
+                .trim();
+
+            if (!title) return null;
+
+            return {
+                title: title.charAt(0).toUpperCase() + title.slice(1),
+                deadline,
+                priority,
+                duration: 60,
+                cognitiveLoad: priority === 'critical' || priority === 'high' ? 'high' : 'medium'
+            };
+        };
+
+        // ==================== UTILITY FUNCTIONS ====================
+        
+        const generateId = () => Date.now().toString() + Math.random().toString(36).substr(2, 9);
+
+        const formatTime = (date) => {
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        };
+
+        const formatTimeAgo = (date) => {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(minutes / 60);
+            
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            return date.toLocaleDateString();
+        };
+
+        // ==================== RENDER FUNCTIONS ====================
+        
+        const render = () => {
+            const state = store.getState();
+            const app = document.getElementById('app');
+            
+            if (state.currentView === 'onboarding') {
+                app.innerHTML = renderOnboarding(state);
+            } else {
+                app.innerHTML = renderDashboard(state);
+            }
+
+            attachEventListeners(state);
+        };
+
+        // Onboarding Render
+        const renderOnboarding = (state) => {
+            const questions = [
+                {
+                    id: 'energyPeak',
+                    question: 'When do you feel most mentally sharp and energized?',
+                    type: 'slider',
+                    min: 5,
+                    max: 23,
+                    labels: ['5 AM', '2 PM', '11 PM']
+                },
+                {
+                    id: 'focusDuration',
+                    question: 'How long can you work before checking your phone or getting distracted?',
+                    type: 'choice',
+                    options: [
+                        { label: 'Less than 5 minutes', value: 0.1 },
+                        { label: '5-15 minutes', value: 0.3 },
+                        { label: '15-30 minutes', value: 0.5 },
+                        { label: '30-60 minutes', value: 0.7 },
+                        { label: 'Over an hour', value: 0.9 }
+                    ]
+                },
+                {
+                    id: 'morningAlarm',
+                    question: "What's your typical response to a morning alarm?",
+                    type: 'choice',
+                    options: [
+                        { label: 'I wake up before it rings', value: 0.1 },
+                        { label: 'I get up on the first alarm', value: 0.3 },
+                        { label: 'I snooze once or twice', value: 0.5 },
+                        { label: 'I snooze multiple times', value: 0.7 },
+                        { label: 'I often sleep through alarms', value: 0.9 }
+                    ]
+                },
+                {
+                    id: 'taskStart',
+                    question: 'When you have an important task, when do you typically start?',
+                    type: 'choice',
+                    options: [
+                        { label: 'Immediately or ahead of time', value: 0.1 },
+                        { label: 'With plenty of time to spare', value: 0.3 },
+                        { label: 'With just enough time', value: 0.5 },
+                        { label: 'At the last minute', value: 0.7 },
+                        { label: 'Often miss deadlines', value: 0.95 }
+                    ]
+                },
+                {
+                    id: 'breakPattern',
+                    question: 'How do your breaks usually go during work?',
+                    type: 'choice',
+                    options: [
+                        { label: 'I rarely need breaks', value: 0.2 },
+                        { label: 'Short, scheduled breaks', value: 0.4 },
+                        { label: 'Breaks often extend longer than planned', value: 0.6 },
+                        { label: 'I struggle to return from breaks', value: 0.8 }
+                    ]
+                }
+            ];
+
+            const currentQuestion = questions[state.onboardingStep];
+            const progress = ((state.onboardingStep + 1) / questions.length) * 100;
+
+            return `
+                <div class="onboarding-container">
+                    <div class="onboarding-card animate-fade-in-up">
+                        <div class="logo">
+                            <h1>ChronosAI</h1>
+                            <p>Behavioral Productivity Engine</p>
+                        </div>
+
+                        <div class="progress-indicator">
+                            <div class="progress-text">
+                                <span>Building your profile</span>
+                                <span>${state.onboardingStep + 1} / ${questions.length}</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="question-card animate-slide-in-right" data-question="${currentQuestion.id}">
+                            <h2 class="question-title">${currentQuestion.question}</h2>
+                            
+                            ${currentQuestion.type === 'choice' ? `
+                                <div class="option-list">
+                                    ${currentQuestion.options.map((option, idx) => `
+                                        <button class="option-button" data-value="${option.value}">
+                                            ${option.label}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            ` : `
+                                <div class="slider-container">
+                                    <input 
+                                        type="range" 
+                                        class="range-slider" 
+                                        id="energySlider"
+                                        min="${currentQuestion.min}" 
+                                        max="${currentQuestion.max}" 
+                                        value="14"
+                                    >
+                                    <div class="slider-labels">
+                                        ${currentQuestion.labels.map(label => `<span>${label}</span>`).join('')}
+                                    </div>
+                                    <div class="slider-value" id="sliderValue">14:00</div>
+                                    <button class="btn btn-primary w-full" id="sliderContinue">Continue</button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Dashboard Render
+        const renderDashboard = (state) => {
+            return `
+                <div class="app-container">
+                    <!-- Main Content -->
+                    <div class="main-content">
+                        <!-- Header -->
+                        <header class="header">
+                            <div class="flex items-center gap-4">
+                                <h1 class="text-xl font-bold text-sage-400">ChronosAI</h1>
+                                <div class="tab-bar">
+                                    <button class="tab-button ${state.activeTab === 'timeline' ? 'active' : ''}" data-tab="timeline">Timeline</button>
+                                    <button class="tab-button ${state.activeTab === 'manual' ? 'active' : ''}" data-tab="manual">Manual</button>
+                                    <button class="tab-button ${state.activeTab === 'settings' ? 'active' : ''}" data-tab="settings">Settings</button>
+                                </div>
+                            </div>
+                            <div class="header-actions">
+                                <button class="btn btn-icon btn-ghost" id="soundToggle">
+                                    ${state.soundEnabled ? `
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                                        </svg>
+                                    ` : `
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+                                        </svg>
+                                    `}
+                                </button>
+                                ${renderNotificationButton(state)}
+                            </div>
+                        </header>
+
+                        <!-- Content Area -->
+                        <div class="content-area">
+                                                        ${state.activeTab === 'timeline' ? renderTimelineView(state) : 
+                              state.activeTab === 'manual' ? renderManualView(state) : 
+                              renderSettingsView(state)}
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar -->
+                    <aside class="right-sidebar">
+                        ${renderBehavioralSidebar(state)}
+                    </aside>
+
+                    <!-- Command Bar -->
+                    ${renderCommandBar(state)}
+
+                    <!-- Modals -->
+                    <div id="modalContainer"></div>
+                </div>
+            `;
+        };
+
+        // Timeline View
+        const renderTimelineView = (state) => {
+            const aiOptimizedTasks = state.tasks.filter(t => t.isAIOptimized);
+            const hardCommitments = state.tasks.filter(t => t.isHardCommitment);
+
+            return `
+                <div class="timeline-view animate-fade-in">
+                    <div class="timeline-header">
+                        <h2 class="timeline-title">Today's Schedule</h2>
+                        <div class="timeline-filters">
+                            <button class="filter-btn active" data-filter="all">All Tasks</button>
+                            <button class="filter-btn" data-filter="ai">AI Optimized</button>
+                            <button class="filter-btn" data-filter="hard">Hard Commits</button>
+                        </div>
+                    </div>
+
+                    ${state.tasks.length === 0 ? `
+                        <div class="empty-state">
+                            <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            </svg>
+                            <h3 class="empty-state-title">No tasks yet</h3>
+                            <p class="empty-state-text">Use the command bar below to add your first task</p>
+                        </div>
+                    ` : `
+                        <div class="task-list">
+                            ${state.tasks.map(task => renderTaskCard(task, state)).join('')}
+                        </div>
+                    `}
+
+                    <!-- Calendar Events Section -->
+                    ${state.calendarEvents.length > 0 ? `
+                        <div class="calendar-events-section" style="margin-top: 2rem;">
+                            <h3 class="text-lg font-semibold text-white" style="margin-bottom: 1rem;">
+                                <span style="color: var(--sage-400);">📅</span> Synced Calendar Events
+                            </h3>
+                            <div class="task-list">
+                                ${state.calendarEvents.map(event => `
+                                    <div class="task-card priority-high">
+                                        <div class="task-header">
+                                            <div class="task-info">
+                                                <div class="task-title-row">
+                                                    <span class="task-status-dot" style="background: var(--red-500);"></span>
+                                                    <span class="task-title">${event.title}</span>
+                                                    <span class="badge badge-red">Hard Stop</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-meta-item">
+                                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                        ${formatTime(new Date(event.start))} - ${formatTime(new Date(event.end))}
+                                                    </span>
+                                                    <span class="badge badge-slate">${event.source}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        };
+
+        // Manual View
+        const renderManualView = (state) => {
+            return `
+                <div class="manual-view animate-fade-in">
+                    <div class="timeline-header">
+                        <h2 class="timeline-title">Manual Task Manager</h2>
+                        <button class="btn btn-secondary" id="behavioralAuditBtn">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                            Behavioral Audit
+                        </button>
+                    </div>
+
+                    <!-- Add Task Form -->
+                    <div class="card" style="margin-bottom: 1.5rem;">
+                        <h3 class="text-lg font-semibold text-white" style="margin-bottom: 1rem;">Add New Task</h3>
+                        <form id="manualTaskForm" class="flex flex-col gap-3">
+                            <div class="flex gap-3">
+                                <input type="text" class="input" id="manualTaskTitle" placeholder="Task title..." required>
+                                <input type="number" class="input" id="manualTaskDuration" placeholder="Duration (min)" value="60" style="width: 150px;">
+                            </div>
+                            <div class="flex gap-3">
+                                <select class="input select" id="manualTaskPriority">
+                                    <option value="low">Low Priority</option>
+                                    <option value="medium" selected>Medium Priority</option>
+                                    <option value="high">High Priority</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                                <select class="input select" id="manualTaskCognitive">
+                                    <option value="low">Low Cognitive Load</option>
+                                    <option value="medium" selected>Medium Cognitive Load</option>
+                                    <option value="high">High Cognitive Load</option>
+                                </select>
+                                <input type="time" class="input" id="manualTaskTime" style="width: 150px;">
+                            </div>
+                            <div class="flex gap-3 items-center">
+                                <label class="checkbox-wrapper">
+                                    <div class="checkbox" id="hardCommitmentCheck">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm text-slate-400">Mark as Hard Commitment</span>
+                                </label>
+                                <button type="submit" class="btn btn-primary" style="margin-left: auto;">
+                                    Add Task
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Task List -->
+                    ${state.tasks.length === 0 ? `
+                        <div class="empty-state">
+                            <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            <h3 class="empty-state-title">No tasks created</h3>
+                            <p class="empty-state-text">Add tasks manually using the form above</p>
+                        </div>
+                    ` : `
+                        <div class="task-list">
+                            ${state.tasks.map(task => renderTaskCard(task, state)).join('')}
+                        </div>
+                    `}
+                </div>
+            `;
+        };
+
+        // Settings View
+        const renderSettingsView = (state) => {
+            return `
+                <div class="settings-view animate-fade-in">
+                    <!-- Alarm Settings -->
+                    <div class="alarm-section">
+                        <div class="alarm-section-header">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <h3 class="alarm-section-title">Smart Alarm System</h3>
+                        </div>
+
+                        ${state.profile && state.profile.laziness > 0.6 ? `
+                            <div class="alarm-warning">
+                                <p class="alarm-warning-text">
+                                    ⚠️ Based on your profile, we recommend Math or QR Alarms to ensure you wake up effectively.
+                                </p>
+                            </div>
+                        ` : ''}
+
+                        <div class="alarm-form">
+                            <input type="time" class="input alarm-time-input" id="newAlarmTime" value="07:00">
+                            <select class="input select" id="newAlarmType">
+                                <option value="standard">🔔 Standard</option>
+                                <option value="math">🧮 Math Challenge</option>
+                                <option value="qr">📱 QR Code Scan</option>
+                            </select>
+                            <button class="btn btn-primary" id="addAlarmBtn">Add Alarm</button>
+                        </div>
+
+                        <div class="alarm-list">
+                            ${state.alarms.length === 0 ? `
+                                <div class="text-center text-slate-500" style="padding: 2rem;">
+                                    No alarms set yet
+                                </div>
+                            ` : state.alarms.map(alarm => `
+                                <div class="alarm-item" data-alarm-id="${alarm.id}">
+                                    <div class="alarm-item-info">
+                                        <span class="alarm-time">${alarm.time}</span>
+                                        <span class="badge ${alarm.type === 'math' ? 'badge-purple' : alarm.type === 'qr' ? 'badge-blue' : 'badge-slate'}">
+                                            ${alarm.type === 'math' ? '🧮 Math' : alarm.type === 'qr' ? '📱 QR' : '🔔 Standard'}
+                                        </span>
+                                        ${alarm.type === 'math' ? `
+                                            <span class="text-xs text-slate-400">Difficulty: ${alarm.difficulty}</span>
+                                        ` : ''}
+                                    </div>
+                                    <div class="alarm-item-actions">
+                                        ${alarm.type === 'math' ? `
+                                            <button class="btn btn-sm btn-ghost test-math-alarm" data-alarm-id="${alarm.id}">
+                                                Test
+                                            </button>
+                                        ` : ''}
+                                        <div class="toggle ${alarm.enabled ? 'active' : ''}" data-alarm-toggle="${alarm.id}">
+                                            <div class="toggle-knob"></div>
+                                        </div>
+                                        <button class="btn btn-icon btn-ghost delete-alarm" data-alarm-id="${alarm.id}">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Calendar Integration -->
+                    <div class="calendar-section">
+                        <div class="calendar-section-header">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <h3 class="calendar-section-title">Calendar Integration</h3>
+                        </div>
+
+                        <div class="calendar-grid">
+                            <button class="calendar-btn" id="syncGoogleCalendar">
+                                <div class="calendar-icon google">
+                                    <svg width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                    </svg>
+                                </div>
+                                <div class="calendar-btn-text">
+                                    <p class="calendar-btn-title">Google Calendar</p>
+                                    <p class="calendar-btn-subtitle">Sync your events</p>
+                                </div>
+                            </button>
+
+                            <button class="calendar-btn" id="syncAppleCalendar">
+                                <div class="calendar-icon apple">
+                                    <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
+                                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                                    </svg>
+                                </div>
+                                <div class="calendar-btn-text">
+                                    <p class="calendar-btn-title">Apple Calendar</p>
+                                    <p class="calendar-btn-subtitle">iCal integration</p>
+                                </div>
+                            </button>
+                        </div>
+
+                        ${state.calendarEvents.length > 0 ? `
+                            <div class="synced-events">
+                                <h4 class="synced-events-title">Synced Events</h4>
+                                ${state.calendarEvents.map(event => `
+                                    <div class="event-item">
+                                        <div class="event-info">
+                                            <div class="event-dot ${event.isHardStop ? 'hard-stop' : 'normal'}"></div>
+                                            <div>
+                                                <p class="event-title">${event.title}</p>
+                                                <p class="event-time">${formatTime(new Date(event.start))} - ${formatTime(new Date(event.end))}</p>
+                                            </div>
+                                        </div>
+                                        ${event.isHardStop ? '<span class="badge badge-red">Hard Stop</span>' : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- Notification Preferences -->
+                    <div class="card" style="margin-top: 1.5rem;">
+                        <h3 class="text-lg font-semibold text-white" style="margin-bottom: 1rem;">
+                            <svg width="20" height="20" fill="none" stroke="var(--sage-400)" viewBox="0 0 24 24" style="display: inline; vertical-align: middle; margin-right: 0.5rem;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                            </svg>
+                            Notification Preferences
+                        </h3>
+                        
+                        <div class="flex flex-col gap-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-white">Sound Notifications</p>
+                                    <p class="text-xs text-slate-400">Play sounds for alerts and completions</p>
+                                </div>
+                                <div class="toggle ${state.soundEnabled ? 'active' : ''}" id="soundToggleSettings">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-white">Daily Battle Plan Email</p>
+                                    <p class="text-xs text-slate-400">Receive morning summary via email</p>
+                                </div>
+                                <div class="toggle active" id="emailToggle">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="font-medium text-white">SMS Nudges</p>
+                                    <p class="text-xs text-slate-400">Text reminders for urgent tasks</p>
+                                </div>
+                                <div class="toggle" id="smsToggle">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Reset -->
+                    <div class="card" style="margin-top: 1.5rem; border-color: var(--red-500);">
+                        <h3 class="text-lg font-semibold text-white" style="margin-bottom: 0.5rem;">Reset Profile</h3>
+                        <p class="text-sm text-slate-400" style="margin-bottom: 1rem;">
+                            Retake the behavioral assessment to update your profile.
+                        </p>
+                        <button class="btn btn-danger" id="resetProfileBtn">
+                            Reset & Retake Quiz
+                        </button>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Task Card Render
+        const renderTaskCard = (task, state) => {
+            const isOverdue = new Date(task.deadline) < new Date() && task.status !== 'completed';
+            const showSubtasks = task.subTasks && task.subTasks.length > 0;
+            const completedSubtasks = showSubtasks ? task.subTasks.filter(st => st.completed).length : 0;
+
+            return `
+                <div class="task-card priority-${task.priority} ${isOverdue ? 'shake' : ''}" data-task-id="${task.id}">
+                    <div class="task-header">
+                        <div class="task-info">
+                            <div class="task-title-row">
+                                <span class="task-status-dot ${task.status}"></span>
+                                <span class="task-title">${task.title}</span>
+                                ${task.isAIOptimized ? '<span class="badge badge-sage">AI Optimized</span>' : ''}
+                                ${task.isHardCommitment ? '<span class="badge badge-red">Hard Commitment</span>' : ''}
+                                ${isOverdue ? '<span class="badge badge-red">Overdue</span>' : ''}
+                            </div>
+                            <div class="task-meta">
+                                <span class="task-meta-item">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    ${task.scheduledTime ? formatTime(new Date(task.scheduledTime)) : 'Unscheduled'}
+                                </span>
+                                <span>${task.duration} min</span>
+                                ${task.bufferTime ? `<span class="text-sage-400">+${task.bufferTime}min buffer</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <select class="input select status-select" data-task-id="${task.id}">
+                                <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
+                            </select>
+                            <button class="btn btn-icon btn-ghost delete-task" data-task-id="${task.id}">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    ${showSubtasks ? `
+                        <div class="subtasks-section">
+                            <button class="subtasks-toggle" data-task-id="${task.id}">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                <span>${completedSubtasks} / ${task.subTasks.length} micro-tasks</span>
+                            </button>
+                            <div class="subtasks-list hidden" id="subtasks-${task.id}">
+                                ${task.subTasks.map(st => `
+                                    <div class="subtask-item ${st.isEasyWin ? 'easy-win' : ''}" data-subtask-id="${st.id}" data-task-id="${task.id}">
+                                        <div class="checkbox ${st.completed ? 'checked' : ''}" data-subtask-check="${st.id}">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </div>
+                                        <span class="subtask-text ${st.completed ? 'completed' : ''}">${st.title}</span>
+                                        <span class="subtask-duration">${st.duration}min</span>
+                                        ${st.isEasyWin ? '<span class="subtask-easy-win-badge">⚡ Easy Win</span>' : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        };
+
+        // Notification Button Render
+        const renderNotificationButton = (state) => {
+            const unreadCount = state.notifications.filter(n => !n.read).length;
+
+            return `
+                <div class="relative" id="notificationWrapper">
+                    <button class="notification-btn" id="notificationBtn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        ${unreadCount > 0 ? `<span class="notification-badge">${unreadCount}</span>` : ''}
+                    </button>
+                    <div class="notification-dropdown hidden" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h3>Notifications</h3>
+                        </div>
+                        <div class="notification-list">
+                            ${state.notifications.length === 0 ? `
+                                <div class="notification-empty">No notifications yet</div>
+                            ` : state.notifications.map(n => `
+                                <div class="notification-item ${!n.read ? 'unread' : ''}" data-notification-id="${n.id}">
+                                    <div class="notification-content">
+                                        <div class="notification-dot ${n.severity}"></div>
+                                        <div>
+                                            <p class="notification-text">${n.message}</p>
+                                            <p class="notification-time">${formatTimeAgo(new Date(n.timestamp))}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Behavioral Sidebar Render
+        const renderBehavioralSidebar = (state) => {
+            if (!state.profile) {
+                return `
+                    <div class="text-center text-slate-500" style="padding: 2rem;">
+                        Complete the quiz to see your profile
+                    </div>
+                `;
+            }
+
+            const audits = AIScheduleEngine.generateBehavioralAudit(state.tasks, state.profile);
+            const completedTasks = state.tasks.filter(t => t.status === 'completed').length;
+            const pendingTasks = state.tasks.filter(t => t.status === 'pending').length;
+
+            return `
+                <!-- Inertia Gauge -->
+                <div class="inertia-gauge">
+                    ${renderInertiaGauge(state.inertiaScore)}
+                    <p class="text-xs text-slate-500" style="margin-top: 0.5rem; text-align: center;">
+                        Complete tasks to increase your momentum
+                    </p>
+                </div>
+
+                <!-- Profile Summary -->
+                <div class="profile-section">
+                    <h3 class="profile-title">Your Profile</h3>
+                    
+                    <div class="profile-stat">
+                        <span class="profile-stat-label">Chronotype</span>
+                        <span class="profile-stat-value text-sage-400" style="text-transform: capitalize;">
+                            ${state.profile.chronotype.replace('-', ' ')}
+                        </span>
+                    </div>
+                    
+                    <div class="profile-stat">
+                        <span class="profile-stat-label">Peak Energy</span>
+                        <span class="profile-stat-value text-sage-400">${state.profile.peakEnergy}</span>
+                    </div>
+
+                    <div class="profile-bar-container">
+                        <div class="profile-bar-header">
+                            <span class="profile-stat-label">Focus Score</span>
+                            <span class="profile-stat-label">${Math.round(state.profile.focus * 100)}%</span>
+                        </div>
+                        <div class="profile-bar">
+                            <div class="profile-bar-fill focus" style="width: ${state.profile.focus * 100}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="profile-bar-container" style="margin-top: 0.75rem;">
+                        <div class="profile-bar-header">
+                            <span class="profile-stat-label">Inertia Tendency</span>
+                            <span class="profile-stat-label">${Math.round(state.profile.laziness * 100)}%</span>
+                        </div>
+                        <div class="profile-bar">
+                            <div class="profile-bar-fill inertia" style="width: ${state.profile.laziness * 100}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="profile-stat" style="margin-top: 0.75rem;">
+                        <span class="profile-stat-label">Nudge Style</span>
+                        <span class="profile-stat-value ${
+                            state.profile.nudgeStyle === 'aggressive' ? 'text-red-400' :
+                            state.profile.nudgeStyle === 'firm' ? 'text-yellow-400' : 'text-sage-400'
+                        }" style="text-transform: capitalize;">
+                            ${state.profile.nudgeStyle}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                ${audits.length > 0 ? `
+                    <div class="insights-section">
+                        <h3 class="insights-title">AI Insights</h3>
+                        ${audits.map((audit, idx) => `
+                            <div class="insight-card animate-fade-in" style="animation-delay: ${idx * 100}ms;">
+                                <p class="insight-text">${audit}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <p class="stat-value">${completedTasks}</p>
+                        <p class="stat-label">Completed</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-value">${pendingTasks}</p>
+                        <p class="stat-label">Pending</p>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Inertia Gauge Render
+        const renderInertiaGauge = (score) => {
+            const radius = 70;
+            const strokeWidth = 10;
+            const normalizedRadius = radius - strokeWidth / 2;
+            const circumference = normalizedRadius * 2 * Math.PI;
+            const strokeDashoffset = circumference - (score / 100) * circumference;
+
+            let color;
+            if (score < 30) color = '#dc2626';
+            else if (score < 60) color = '#f59e0b';
+            else color = '#22c55e';
+
+            return `
+                <div class="gauge-container">
+                    <svg class="gauge-svg" width="${radius * 2}" height="${radius * 2}">
+                        <circle
+                            class="gauge-bg"
+                            cx="${radius}"
+                            cy="${radius}"
+                            r="${normalizedRadius}"
+                        />
+                        <circle
+                            class="gauge-fill"
+                            cx="${radius}"
+                            cy="${radius}"
+                            r="${normalizedRadius}"
+                            stroke="${color}"
+                            stroke-dasharray="${circumference} ${circumference}"
+                            stroke-dashoffset="${strokeDashoffset}"
+                            style="filter: drop-shadow(0 0 8px ${color});"
+                        />
+                    </svg>
+                    <div class="gauge-center">
+                        <span class="gauge-value" style="color: ${color};">${score}</span>
+                        <span class="gauge-label">Inertia Score</span>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Command Bar Render
+        const renderCommandBar = (state) => {
+            return `
+                <div class="command-bar">
+                    <div class="command-bar-glow"></div>
+                    <div class="command-bar-inner">
+                        <div class="command-bar-header">
+                            <span class="command-bar-label">COMMAND BAR</span>
+                            <span class="command-bar-hint">Natural language input</span>
+                        </div>
+                        <div class="command-bar-content">
+                            <div class="command-icon" id="commandIcon">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <input 
+                                type="text" 
+                                class="command-input" 
+                                id="commandInput"
+                                placeholder='Try: "I need to finish my report by 5 PM"'
+                            >
+                            <button class="btn btn-primary" id="commandSubmit">Add</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // ==================== MODAL FUNCTIONS ====================
+
+        const showModal = (content) => {
+            const container = document.getElementById('modalContainer');
+            container.innerHTML = `
+                <div class="modal-overlay animate-fade-in" id="modalOverlay">
+                    <div class="modal animate-scale-in">
+                        ${content}
+                    </div>
+                </div>
+            `;
+        };
+
+        const hideModal = () => {
+            const container = document.getElementById('modalContainer');
+            container.innerHTML = '';
+        };
+
+        const showMathAlarmModal = (alarm) => {
+            const profile = store.getState().profile;
+            const difficulty = profile && profile.laziness > 0.7 ? 'hard' : 'medium';
+            const ranges = { easy: 10, medium: 50, hard: 100 };
+            const max = ranges[difficulty];
+            
+            const a = Math.floor(Math.random() * max) + 1;
+            const b = Math.floor(Math.random() * max) + 1;
+            const ops = difficulty === 'easy' ? ['+', '-'] : ['+', '-', '*'];
+            const op = ops[Math.floor(Math.random() * ops.length)];
+            
+            let answer;
+            switch (op) {
+                case '+': answer = a + b; break;
+                case '-': answer = Math.abs(a - b); break;
+                case '*': answer = a * b; break;
+                default: answer = a + b;
+            }
+
+            showModal(`
+                <h3 class="modal-title text-center">🧮 Solve to Dismiss</h3>
+                <div class="math-problem">${Math.max(a, b)} ${op} ${Math.min(a, b)} = ?</div>
+                <input type="number" class="input math-input" id="mathAnswer" placeholder="Your answer" autofocus>
+                <button class="btn btn-primary w-full" id="checkMathAnswer" data-answer="${answer}" style="margin-top: 1rem;">
+                    Submit
+                </button>
+            `);
+
+            setTimeout(() => {
+                const input = document.getElementById('mathAnswer');
+                if (input) input.focus();
+
+                document.getElementById('checkMathAnswer').addEventListener('click', () => {
+                    const userAnswer = parseInt(document.getElementById('mathAnswer').value);
+                    if (userAnswer === answer) {
+                        hideModal();
+                        soundEngine.playSuccess();
+                        store.dispatch({
+                            type: 'ADD_NOTIFICATION',
+                            payload: {
+                                id: generateId(),
+                                message: '🎉 Math challenge completed! You\'re awake!',
+                                severity: 'info',
+                                timestamp: new Date(),
+                                read: false
+                            }
+                        });
+                    } else {
+                        soundEngine.playNotification('urgent');
+                        document.getElementById('mathAnswer').classList.add('animate-shake');
+                        setTimeout(() => {
+                            document.getElementById('mathAnswer').classList.remove('animate-shake');
+                        }, 500);
+                    }
+                });
+            }, 100);
+        };
+
+        const showSyncCalendarModal = () => {
+            showModal(`
+                <h3 class="modal-title">Sync Google Calendar</h3>
+                <p class="modal-text">
+                    This will import your calendar events and mark them as hard stops. 
+                    The AI will work around these commitments.
+                </p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancelSync">Cancel</button>
+                    <button class="btn btn-primary" id="confirmSync">Sync Now</button>
+                </div>
+            `);
+
+            setTimeout(() => {
+                document.getElementById('cancelSync').addEventListener('click', hideModal);
+                document.getElementById('confirmSync').addEventListener('click', () => {
+                    // Mock calendar events
+                    const mockEvents = [
+                        {
+                            id: generateId(),
+                            title: 'Team Standup',
+                            start: new Date(new Date().setHours(10, 0, 0, 0)),
+                            end: new Date(new Date().setHours(10, 30, 0, 0)),
+                            source: 'google',
+                            isHardStop: true
+                        },
+                        {
+                            id: generateId(),
+                            title: 'Client Meeting',
+                            start: new Date(new Date().setHours(14, 0, 0, 0)),
+                            end: new Date(new Date().setHours(15, 0, 0, 0)),
+                            source: 'google',
+                            isHardStop: true
+                        }
+                    ];
+
+                    mockEvents.forEach(event => {
+                        store.dispatch({ type: 'ADD_CALENDAR_EVENT', payload: event });
+                    });
+
+                    store.dispatch({
+                        type: 'ADD_NOTIFICATION',
+                        payload: {
+                            id: generateId(),
+                            message: `✅ Synced ${mockEvents.length} events from Google Calendar`,
+                            severity: 'info',
+                            timestamp: new Date(),
+                            read: false
+                        }
+                    });
+
+                    soundEngine.playSuccess();
+                    hideModal();
+                });
+            }, 100);
+        };
+
+        const showBehavioralAuditModal = () => {
+            const state = store.getState();
+            const audits = state.profile ? AIScheduleEngine.generateBehavioralAudit(state.tasks, state.profile) : [];
+
+            showModal(`
+                <h3 class="modal-title">
+                    <svg width="24" height="24" fill="none" stroke="var(--sage-400)" viewBox="0 0 24 24" style="display: inline; vertical-align: middle; margin-right: 0.5rem;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    Behavioral Audit
+                </h3>
+                ${audits.length > 0 ? `
+                    <div style="margin-bottom: 1rem;">
+                        ${audits.map(audit => `
+                            <div class="insight-card" style="margin-bottom: 0.5rem;">
+                                <p class="insight-text">${audit}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : `
+                    <p class="modal-text">
+                        No issues detected! Your schedule looks well-balanced based on your behavioral profile.
+                    </p>
+                `}
+                <button class="btn btn-primary w-full" id="closeAuditModal">Got It</button>
+            `);
+
+            setTimeout(() => {
+                document.getElementById('closeAuditModal').addEventListener('click', hideModal);
+            }, 100);
+        };
+
+        // ==================== EVENT LISTENERS ====================
+
+        const attachEventListeners = (state) => {
+            // Onboarding Events
+            if (state.currentView === 'onboarding') {
+                // Choice buttons
+                document.querySelectorAll('.option-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const value = parseFloat(e.target.dataset.value);
+                        handleOnboardingAnswer(value);
+                    });
+                });
+
+                // Slider
+                const slider = document.getElementById('energySlider');
+                const sliderValue = document.getElementById('sliderValue');
+                if (slider) {
+                    slider.addEventListener('input', (e) => {
+                        sliderValue.textContent = `${e.target.value}:00`;
+                    });
+                }
+
+                // Slider continue button
+                const sliderContinue = document.getElementById('sliderContinue');
+                if (sliderContinue) {
+                    sliderContinue.addEventListener('click', () => {
+                        const value = parseInt(document.getElementById('energySlider').value);
+                        handleOnboardingAnswer(value);
+                    });
+                }
+            }
+
+            // Dashboard Events
+            if (state.currentView === 'dashboard') {
+                // Tab buttons
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        store.dispatch({ type: 'SET_ACTIVE_TAB', payload: e.target.dataset.tab });
+                    });
+                });
+
+                // Sound toggle
+                const soundToggle = document.getElementById('soundToggle');
+                if (soundToggle) {
+                    soundToggle.addEventListener('click', () => {
+                        store.dispatch({ type: 'TOGGLE_SOUND', payload: !state.soundEnabled });
+                    });
+                }
+
+                // Sound toggle in settings
+                const soundToggleSettings = document.getElementById('soundToggleSettings');
+                if (soundToggleSettings) {
+                    soundToggleSettings.addEventListener('click', () => {
+                        soundToggleSettings.classList.toggle('active');
+                        store.dispatch({ type: 'TOGGLE_SOUND', payload: !state.soundEnabled });
+                    });
+                }
+
+                // Notification button
+                const notificationBtn = document.getElementById('notificationBtn');
+                const notificationDropdown = document.getElementById('notificationDropdown');
+                if (notificationBtn && notificationDropdown) {
+                    notificationBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        notificationDropdown.classList.toggle('hidden');
+                    });
+
+                    document.addEventListener('click', () => {
+                        notificationDropdown.classList.add('hidden');
+                    });
+                }
+
+                // Notification items
+                document.querySelectorAll('.notification-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        store.dispatch({ type: 'MARK_NOTIFICATION_READ', payload: item.dataset.notificationId });
+                    });
+                });
+
+                // Command bar
+                const commandInput = document.getElementById('commandInput');
+                const commandSubmit = document.getElementById('commandSubmit');
+                const commandIcon = document.getElementById('commandIcon');
+
+                if (commandInput && commandSubmit) {
+                    const handleCommand = async () => {
+                        const text = commandInput.value.trim();
+                        if (!text) return;
+
+                        // Show loading
+                        commandIcon.innerHTML = '<div class="command-spinner"></div>';
+
+                        await new Promise(r => setTimeout(r, 500));
+
+                        const parsed = parseNaturalLanguage(text);
+                        if (parsed) {
+                            const newTask = {
+                                id: generateId(),
+                                title: parsed.title,
+                                deadline: parsed.deadline,
+                                duration: parsed.duration,
+                                priority: parsed.priority,
+                                status: 'pending',
+                                isAIOptimized: true,
+                                isHardCommitment: false,
+                                cognitiveLoad: parsed.cognitiveLoad
+                            };
+
+                            // Apply AI optimization if profile exists
+                            if (state.profile) {
+                                const optimized = AIScheduleEngine.optimizeSchedule([newTask], state.profile, state.calendarEvents);
+                                store.dispatch({ type: 'ADD_TASK', payload: optimized[0] });
+                            } else {
+                                store.dispatch({ type: 'ADD_TASK', payload: newTask });
+                            }
+
+                            store.dispatch({
+                                type: 'ADD_NOTIFICATION',
+                                payload: {
+                                    id: generateId(),
+                                    message: `Task "${newTask.title}" added to your schedule`,
+                                    severity: 'info',
+                                    timestamp: new Date(),
+                                    read: false
+                                }
+                            });
+
+                            soundEngine.playSuccess();
+                        }
+
+                        commandInput.value = '';
+                        commandIcon.innerHTML = `
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        `;
+                    };
+
+                    commandSubmit.addEventListener('click', handleCommand);
+                    commandInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') handleCommand();
+                    });
+                }
+
+                // Task status changes
+                document.querySelectorAll('.status-select').forEach(select => {
+                    select.addEventListener('change', (e) => {
+                        const taskId = e.target.dataset.taskId;
+                        const newStatus = e.target.value;
+                        
+                        store.dispatch({
+                            type: 'UPDATE_TASK',
+                            payload: { id: taskId, updates: { status: newStatus } }
+                        });
+
+                        if (newStatus === 'completed') {
+                            soundEngine.playSuccess();
+                            store.dispatch({
+                                type: 'UPDATE_INERTIA_SCORE',
+                                payload: state.inertiaScore + 5
+                            });
+                        }
+                    });
+                });
+
+                // Delete task buttons
+                document.querySelectorAll('.delete-task').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        store.dispatch({ type: 'DELETE_TASK', payload: btn.dataset.taskId });
+                    });
+                });
+
+                // Subtasks toggle
+                document.querySelectorAll('.subtasks-toggle').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const taskId = btn.dataset.taskId;
+                        const subtasksList = document.getElementById(`subtasks-${taskId}`);
+                        subtasksList.classList.toggle('hidden');
+                        btn.classList.toggle('open');
+                    });
+                });
+
+                // Subtask checkboxes
+                document.querySelectorAll('[data-subtask-check]').forEach(checkbox => {
+                    checkbox.addEventListener('click', () => {
+                        const subtaskItem = checkbox.closest('.subtask-item');
+                        const taskId = subtaskItem.dataset.taskId;
+                        const subtaskId = subtaskItem.dataset.subtaskId;
+                        
+                        const task = state.tasks.find(t => t.id === taskId);
+                        if (task && task.subTasks) {
+                            const updatedSubTasks = task.subTasks.map(st =>
+                                st.id === subtaskId ? { ...st, completed: !st.completed } : st
+                            );
+                            store.dispatch({
+                                type: 'UPDATE_TASK',
+                                payload: { id: taskId, updates: { subTasks: updatedSubTasks } }
+                            });
+                            soundEngine.playSuccess();
+                        }
+                    });
+                });
+
+                // Manual task form
+                const manualTaskForm = document.getElementById('manualTaskForm');
+                if (manualTaskForm) {
+                    const hardCommitmentCheck = document.getElementById('hardCommitmentCheck');
+                    let isHardCommitment = false;
+
+                    if (hardCommitmentCheck) {
+                        hardCommitmentCheck.addEventListener('click', () => {
+                            isHardCommitment = !isHardCommitment;
+                            hardCommitmentCheck.classList.toggle('checked');
+                        });
+                    }
+
+                    manualTaskForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        
+                        const title = document.getElementById('manualTaskTitle').value;
+                        const duration = parseInt(document.getElementById('manualTaskDuration').value) || 60;
+                        const priority = document.getElementById('manualTaskPriority').value;
+                        const cognitiveLoad = document.getElementById('manualTaskCognitive').value;
+                        const time = document.getElementById('manualTaskTime').value;
+
+                        let scheduledTime = null;
+                        if (time) {
+                            scheduledTime = new Date();
+                            const [hours, minutes] = time.split(':');
+                            scheduledTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                        }
+
+                        const newTask = {
+                            id: generateId(),
+                            title,
+                            deadline: scheduledTime || new Date(Date.now() + 4 * 60 * 60 * 1000),
+                            duration,
+                            priority,
+                            status: 'pending',
+                            isAIOptimized: false,
+                            isHardCommitment,
+                            cognitiveLoad,
+                            scheduledTime
+                        };
+
+                        store.dispatch({ type: 'ADD_TASK', payload: newTask });
+                        soundEngine.playSuccess();
+
+                        // Reset form
+                        manualTaskForm.reset();
+                        if (hardCommitmentCheck) {
+                            hardCommitmentCheck.classList.remove('checked');
+                            isHardCommitment = false;
+                        }
+                    });
+                }
+
+                // Behavioral audit button
+                const behavioralAuditBtn = document.getElementById('behavioralAuditBtn');
+                if (behavioralAuditBtn) {
+                    behavioralAuditBtn.addEventListener('click', showBehavioralAuditModal);
+                }
+
+                // Add alarm button
+                const addAlarmBtn = document.getElementById('addAlarmBtn');
+                if (addAlarmBtn) {
+                    addAlarmBtn.addEventListener('click', () => {
+                        const time = document.getElementById('newAlarmTime').value;
+                        const type = document.getElementById('newAlarmType').value;
+                        const profile = state.profile;
+
+                        const alarm = {
+                            id: generateId(),
+                            time,
+                            type,
+                            difficulty: profile && profile.laziness > 0.7 ? 'hard' : 'medium',
+                            enabled: true
+                        };
+
+                        store.dispatch({ type: 'ADD_ALARM', payload: alarm });
+                        soundEngine.playSuccess();
+                    });
+                }
+
+                // Alarm toggles
+                document.querySelectorAll('[data-alarm-toggle]').forEach(toggle => {
+                    toggle.addEventListener('click', () => {
+                        const alarmId = toggle.dataset.alarmToggle;
+                        const alarm = state.alarms.find(a => a.id === alarmId);
+                        if (alarm) {
+                            store.dispatch({
+                                type: 'UPDATE_ALARM',
+                                payload: { id: alarmId, updates: { enabled: !alarm.enabled } }
+                            });
+                        }
+                    });
+                });
+
+                // Test math alarm buttons
+                document.querySelectorAll('.test-math-alarm').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const alarmId = btn.dataset.alarmId;
+                        const alarm = state.alarms.find(a => a.id === alarmId);
+                        if (alarm) {
+                            showMathAlarmModal(alarm);
+                        }
+                    });
+                });
+
+                // Delete alarm buttons
+                document.querySelectorAll('.delete-alarm').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        store.dispatch({ type: 'DELETE_ALARM', payload: btn.dataset.alarmId });
+                    });
+                });
+
+                // Calendar sync buttons
+                const syncGoogleCalendar = document.getElementById('syncGoogleCalendar');
+                if (syncGoogleCalendar) {
+                    syncGoogleCalendar.addEventListener('click', showSyncCalendarModal);
+                }
+
+                const syncAppleCalendar = document.getElementById('syncAppleCalendar');
+                if (syncAppleCalendar) {
+                    syncAppleCalendar.addEventListener('click', () => {
+                        store.dispatch({
+                            type: 'ADD_NOTIFICATION',
+                            payload: {
+                                id: generateId(),
+                                message: 'Apple Calendar integration coming soon!',
+                                severity: 'info',
+                                timestamp: new Date(),
+                                read: false
+                            }
+                        });
+                    });
+                }
+
+                // Reset profile button
+                const resetProfileBtn = document.getElementById('resetProfileBtn');
+                if (resetProfileBtn) {
+                    resetProfileBtn.addEventListener('click', () => {
+                        store.dispatch({ type: 'SET_PROFILE', payload: null });
+                        store.dispatch({ type: 'SET_ONBOARDING_STEP', payload: 0 });
+                        store.dispatch({ type: 'SET_VIEW', payload: 'onboarding' });
+                    });
+                }
+
+                // Filter buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        // Filter logic could be implemented here
+                    });
+                });
+
+                // Generic toggle handlers
+                document.querySelectorAll('.toggle:not([data-alarm-toggle])').forEach(toggle => {
+                    if (!toggle.id.includes('sound')) {
+                        toggle.addEventListener('click', () => {
+                            toggle.classList.toggle('active');
+                        });
+                    }
+                });
+            }
+
+            // Close modal on overlay click
+            const modalOverlay = document.getElementById('modalOverlay');
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) {
+                        hideModal();
+                    }
+                });
+            }
+        };
+
+        // Onboarding answer handler
+        const onboardingAnswers = {};
+        const questions = ['energyPeak', 'focusDuration', 'morningAlarm', 'taskStart', 'breakPattern'];
+
+        const handleOnboardingAnswer = (value) => {
+            const state = store.getState();
+            const currentQuestion = questions[state.onboardingStep];
+            
+            onboardingAnswers[currentQuestion] = value;
+
+            if (state.onboardingStep < questions.length - 1) {
+                store.dispatch({ type: 'SET_ONBOARDING_STEP', payload: state.onboardingStep + 1 });
+            } else {
+                // Calculate profile
+                const peakHour = onboardingAnswers.energyPeak || 14;
+                const chronotype = peakHour < 10 ? 'morning-lark' : peakHour > 18 ? 'night-owl' : 'neutral';
+                const laziness = ((onboardingAnswers.taskStart || 0.5) + (onboardingAnswers.breakPattern || 0.5)) / 2;
+                const focus = onboardingAnswers.focusDuration || 0.5;
+                const snoozeFactor = onboardingAnswers.morningAlarm || 0.5;
+                const distractionIndex = 1 - focus;
+
+                const profile = {
+                    laziness,
+                    focus,
+                    peakEnergy: `${peakHour}:00`,
+                    chronotype,
+                    distractionIndex,
+                    snoozeFactor,
+                    nudgeStyle: AIScheduleEngine.determineNudgeStyle({ laziness, snoozeFactor })
+                };
+
+                store.dispatch({ type: 'SET_PROFILE', payload: profile });
+                store.dispatch({ type: 'SET_VIEW', payload: 'dashboard' });
+                soundEngine.playSuccess();
+
+                // Add welcome notification
+                store.dispatch({
+                    type: 'ADD_NOTIFICATION',
+                    payload: {
+                        id: generateId(),
+                        message: `Welcome! Your profile is ready. Peak energy time: ${profile.peakEnergy}`,
+                        severity: 'info',
+                        timestamp: new Date(),
+                        read: false
+                    }
+                });
+            }
+        };
+
+        // ==================== OVERDUE TASK CHECKER ====================
+
+        const checkOverdueTasks = () => {
+            const state = store.getState();
+            const now = new Date();
+
+            state.tasks.forEach(task => {
+                if (task.status !== 'completed' && new Date(task.deadline) < now) {
+                    // Check if we already notified
+                    const alreadyNotified = state.notifications.some(
+                        n => n.message.includes(task.title) && n.message.includes('overdue')
+                    );
+
+                    if (!alreadyNotified) {
+                        store.dispatch({
+                            type: 'ADD_NOTIFICATION',
+                            payload: {
+                                id: generateId(),
+                                message: `⚠️ Task "${task.title}" is overdue!`,
+                                severity: 'urgent',
+                                timestamp: new Date(),
+                                read: false
+                            }
+                        });
+                        soundEngine.playNotification('urgent');
+
+                        // Decrease inertia score
+                        store.dispatch({
+                            type: 'UPDATE_INERTIA_SCORE',
+                            payload: state.inertiaScore - 3
+                        });
+                    }
+                }
+            });
+        };
+
+        // Check every minute
+        setInterval(checkOverdueTasks, 60000);
+
+        // ==================== INITIALIZE APP ====================
+
+        // Subscribe to store changes
+        store.subscribe(render);
+
+        // Initial render
+        render();
+
+        // Load saved state from localStorage
+        const savedState = localStorage.getItem('chronosai_state');
+        if (savedState) {
+            try {
+                const parsed = JSON.parse(savedState);
+                if (parsed.profile) {
+                    store.dispatch({ type: 'SET_PROFILE', payload: parsed.profile });
+                    store.dispatch({ type: 'SET_VIEW', payload: 'dashboard' });
+                }
+                if (parsed.tasks) {
+                    parsed.tasks.forEach(task => {
+                        task.deadline = new Date(task.deadline);
+                        if (task.scheduledTime) task.scheduledTime = new Date(task.scheduledTime);
+                        store.dispatch({ type: 'ADD_TASK', payload: task });
+                    });
+                }
+                if (parsed.alarms) {
+                    parsed.alarms.forEach(alarm => store.dispatch({ type: 'ADD_ALARM', payload: alarm }));
+                }
+                if (parsed.calendarEvents) {
+                    parsed.calendarEvents.forEach(event => {
+                        event.start = new Date(event.start);
+                        event.end = new Date(event.end);
+                        store.dispatch({ type: 'ADD_CALENDAR_EVENT', payload: event });
+                    });
+                }
+                if (typeof parsed.inertiaScore === 'number') {
+                    store.dispatch({ type: 'UPDATE_INERTIA_SCORE', payload: parsed.inertiaScore });
+                }
+            } catch (e) {
+                console.error('Failed to load saved state:', e);
+            }
+        }
+
+        // Save state to localStorage on changes
+        store.subscribe((state) => {
+            const toSave = {
+                profile: state.profile,
+                tasks: state.tasks,
+                alarms: state.alarms,
+                calendarEvents: state.calendarEvents,
+                inertiaScore: state.inertiaScore
+            };
+            localStorage.setItem('chronosai_state', JSON.stringify(toSave));
+        });
+
+        console.log('🚀 ChronosAI Professional initialized');
+    </script>
+</body>
+</html>
