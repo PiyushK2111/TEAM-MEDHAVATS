@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChronosAI Professional - Behavioral Productivity Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== CSS RESET & VARIABLES ==================== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-card: rgba(30, 41, 59, 0.5);
+            
+            --sage-400: #4ade80;
+            --sage-500: #22c55e;
+            --sage-600: #16a34a;
+            --emerald-400: #34d399;
+            --emerald-500: #10b981;
+            --emerald-600: #059669;
+            
+            --red-400: #f87171;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --orange-400: #fb923c;
+            --orange-500: #f97316;
+            --yellow-400: #facc15;
+            --yellow-500: #eab308;
+            
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            
+            --purple-400: #c084fc;
+            --purple-500: #a855f7;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
+            
+            --transition-fast: 150ms ease;
+            --transition-base: 200ms ease;
+            --transition-slow: 300ms ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--slate-900) 0%, var(--bg-secondary) 50%, #1a1a2e 100%);
+            color: var(--slate-300);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ==================== SCROLLBAR ==================== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--slate-800);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--slate-600);
+            border-radius: var(--radius-full);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--slate-500);
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideOutRight { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(50px); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes bellRing { 0%, 100% { transform: rotate(0); } 15% { transform: rotate(15deg); } 30% { transform: rotate(-15deg); } 45% { transform: rotate(10deg); } 60% { transform: rotate(-10deg); } 75% { transform: rotate(5deg); } }
+        @keyframes progressShrink { from { width: 100%; } to { width: 0%; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        .animate-fade-in { animation: fadeIn 0.3s ease forwards; }
+        .animate-fade-in-up { animation: fadeInUp 0.4s ease forwards; }
+        .animate-fade-in-down { animation: fadeInDown 0.3s ease forwards; }
+        .animate-slide-in-right { animation: slideInRight 0.3s ease forwards; }
+        .animate-slide-out-right { animation: slideOutRight 0.3s ease forwards; }
+        .animate-scale-in { animation: scaleIn 0.2s ease forwards; }
+        .animate-shake { animation: shake 0.4s ease; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .animate-bell-ring { animation: bellRing 0.6s ease; }
+        .animate-pulse { animation: pulse 1.5s ease infinite; }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .flex-1 { flex: 1; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .flex-wrap { flex-wrap: wrap; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .w-full { width: 100%; }
+        .mt-3 { margin-top: 0.75rem; }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-white { color: white; }
+        .text-slate-400 { color: var(--slate-400); }
+        .text-slate-500 { color: var(--slate-500); }
+        .text-sage-400 { color: var(--sage-400); }
+        .text-red-400 { color: var(--red-400); }
+        .text-yellow-400 { color: var(--yellow-400); }
+        .capitalize { text-transform: capitalize; }
+        .line-through { text-decoration: line-through; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        .overflow-hidden { overflow: hidden; }
+        .overflow-y-auto { overflow-y: auto; }
+        .cursor-pointer { cursor: pointer; }
+
+        /* ==================== BUTTONS ==================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            font-family: inherit;
+            border-radius: var(--radius-lg);
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            white-space: nowrap;
+        }
+
+        .btn:hover { transform: translateY(-1px); }
+        .btn:active { transform: translateY(0) scale(0.98); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .btn-primary { background: linear-gradient(135deg, var(--sage-600), var(--emerald-600)); color: white; }
+        .btn-primary:hover { box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
+        .btn-secondary { background: var(--slate-700); color: var(--slate-300); border: 1px solid var(--slate-600); }
+        .btn-secondary:hover { background: var(--slate-600); }
+        .btn-danger { background: linear-gradient(135deg, var(--red-600), var(--red-500)); color: white; }
+        .btn-danger:hover { box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-ghost { background: transparent; color: var(--slate-400); padding: 0.5rem; }
+        .btn-ghost:hover { background: var(--slate-700); color: white; }
+        .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.75rem; }
+        .btn-icon { padding: 0.5rem; }
+
+        /* ==================== FORM ELEMENTS ==================== */
+        .input {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.9375rem;
+            font-family: inherit;
+            color: white;
+            background: var(--slate-700);
+            border: 1px solid var(--slate-600);
+            border-radius: var(--radius-lg);
+            outline: none;
+            transition: all var(--transition-base);
+        }
+        .input:focus { border-color: var(--sage-500); box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1); }
+        .input::placeholder { color: var(--slate-500); }
+        
+        /* Date Input Specifics */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.6;
+            cursor: pointer;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+
+        .select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            width: 1.125rem;
+            height: 1.125rem;
+            border: 2px solid var(--slate-500);
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+        .checkbox:hover { border-color: var(--sage-400); }
+        .checkbox.checked { background: var(--sage-500); border-color: var(--sage-500); }
+        .checkbox svg { width: 0.75rem; height: 0.75rem; color: white; opacity: 0; }
+        .checkbox.checked svg { opacity: 1; }
+
+        .toggle {
+            width: 2.75rem;
+            height: 1.5rem;
+            background: var(--slate-600);
+            border-radius: var(--radius-full);
+            position: relative;
+            cursor: pointer;
+            transition: background var(--transition-base);
+            flex-shrink: 0;
+        }
+        .toggle.active { background: var(--sage-500); }
+        .toggle-knob {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 1.25rem;
+            height: 1.25rem;
+            background: white;
+            border-radius: 50%;
+            transition: transform var(--transition-base);
+        }
+        .toggle.active .toggle-knob { transform: translateX(1.25rem); }
+
+        .range-slider {
+            width: 100%;
+            height: 0.5rem;
+            background: var(--slate-700);
+            border-radius: var(--radius-full);
+            appearance: none;
+            cursor: pointer;
+        }
+        .range-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            background: linear-gradient(135deg, var(--sage-500), var(--emerald-500));
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* ==================== CARDS & BADGES ==================== */
+        .card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--slate-700); border-radius: var(--radius-xl); padding: 1.25rem; }
+        .badge { display: inline-flex; align-items: center; padding: 0.125rem 0.5rem; font-size: 0.6875rem; font-weight: 500; border-radius: var(--radius-full); white-space: nowrap; }
+        .badge-sage { background: rgba(34, 197, 94, 0.15); color: var(--sage-400); }
+        .badge-red { background: rgba(239, 68, 68, 0.15); color: var(--red-400); }
+        .badge-yellow { background: rgba(234, 179, 8, 0.15); color: var(--yellow-400); }
+        .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--purple-400); }
+        .badge-blue { background: rgba(59, 130, 246, 0.15); color: var(--blue-400); }
+        .badge-slate { background: var(--slate-600); color: var(--slate-300); }
+
+        .progress-bar { width: 100%; height: 0.375rem; background: var(--slate-700); border-radius: var(--radius-full); overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--sage-500), var(--emerald-500)); transition: width 0.4s ease; }
+
+        /* ==================== LAYOUT ==================== */
+        .app-container { display: flex; min-height: 100vh; }
+        .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .header { height: 3.5rem; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--slate-700); display: flex; align-items: center; justify-content: space-between; padding: 0 1.25rem; position: sticky; top: 0; z-index: 50; }
+        .content-area { flex: 1; padding: 1.25rem; overflow-y: auto; padding-bottom: 7rem; }
+        .right-sidebar { width: 280px; background: rgba(30, 41, 59, 0.4); border-left: 1px solid var(--slate-700); padding: 1.25rem; overflow-y: auto; flex-shrink: 0; }
+        @media (max-width: 1024px) { .right-sidebar { display: none; } }
+
+        /* ==================== ONBOARDING ==================== */
+        .onboarding-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+        .onboarding-card { max-width: 480px; width: 100%; }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo h1 { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--sage-400), var(--emerald-400)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .logo p { color: var(--slate-400); font-size: 0.875rem; margin-top: 0.25rem; }
+        .question-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--slate-700); border-radius: var(--radius-2xl); padding: 1.5rem; }
+        .question-title { font-size: 1.125rem; font-weight: 600; color: white; margin-bottom: 1.25rem; }
+        .option-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .option-button { width: 100%; padding: 0.875rem 1rem; text-align: left; background: rgba(51, 65, 85, 0.4); border: 1px solid var(--slate-600); border-radius: var(--radius-lg); color: var(--slate-200); font-size: 0.875rem; font-family: inherit; cursor: pointer; transition: all var(--transition-base); }
+        .option-button:hover { background: var(--slate-700); border-color: var(--sage-500); transform: translateX(4px); }
+        .slider-value { text-align: center; font-size: 2rem; font-weight: 700; color: var(--sage-400); margin: 1rem 0; }
+        .slider-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--slate-400); margin-top: 0.5rem; }
+
+        /* ==================== HEADER COMPONENTS ==================== */
+        .tab-bar { display: flex; gap: 0.125rem; background: var(--slate-800); padding: 0.25rem; border-radius: var(--radius-lg); }
+        .tab-button { padding: 0.375rem 0.75rem; font-size: 0.8125rem; font-weight: 500; color: var(--slate-400); background: transparent; border: none; border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-base); font-family: inherit; }
+        .tab-button:hover { color: white; }
+        .tab-button.active { background: var(--sage-500); color: white; }
+        .header-actions { display: flex; align-items: center; gap: 0.5rem; }
+
+        /* ==================== NOTIFICATION SYSTEM ==================== */
+        .notification-wrapper { position: relative; }
+        .notification-btn { position: relative; width: 2.25rem; height: 2.25rem; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: var(--radius-lg); color: var(--slate-400); cursor: pointer; transition: all var(--transition-base); }
+        .notification-btn:hover { background: var(--slate-700); color: white; }
+        .notification-btn.has-unread { color: var(--sage-400); }
+        .notification-btn svg { width: 1.25rem; height: 1.25rem; }
+        .notification-badge { position: absolute; top: 2px; right: 2px; min-width: 1rem; height: 1rem; padding: 0 0.25rem; background: var(--red-500); border-radius: var(--radius-full); font-size: 0.625rem; font-weight: 700; color: white; display: flex; align-items: center; justify-content: center; }
+        .notification-panel { position: absolute; top: calc(100% + 0.5rem); right: 0; width: 340px; max-height: 480px; background: var(--slate-800); border: 1px solid var(--slate-700); border-radius: var(--radius-xl); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); overflow: hidden; z-index: 100; display: flex; flex-direction: column; }
+        .notification-panel-header { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-bottom: 1px solid var(--slate-700); background: rgba(15, 23, 42, 0.5); }
+        .notification-panel-title { display: flex; align-items: center; gap: 0.5rem; }
+        .notification-panel-title h3 { font-size: 0.9375rem; font-weight: 600; color: white; }
+        .notification-count { font-size: 0.625rem; font-weight: 600; padding: 0.125rem 0.375rem; background: var(--sage-500); color: white; border-radius: var(--radius-full); }
+        .notification-panel-actions { display: flex; gap: 0.25rem; }
+        .notification-panel-actions button { font-size: 0.6875rem; font-family: inherit; padding: 0.25rem 0.5rem; background: transparent; border: none; border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-base); }
+        .mark-all-btn { color: var(--sage-400); }
+        .mark-all-btn:hover { background: rgba(34, 197, 94, 0.1); }
+        .clear-all-btn { color: var(--red-400); }
+        .clear-all-btn:hover { background: rgba(239, 68, 68, 0.1); }
+        .notification-tabs { display: flex; padding: 0.5rem; gap: 0.25rem; border-bottom: 1px solid var(--slate-700); }
+        .notification-tab { flex: 1; padding: 0.375rem 0.5rem; font-size: 0.6875rem; font-weight: 500; font-family: inherit; color: var(--slate-400); background: transparent; border: none; border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-base); display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
+        .notification-tab:hover { color: white; background: var(--slate-700); }
+        .notification-tab.active { color: white; background: var(--sage-600); }
+        .notification-list { flex: 1; overflow-y: auto; max-height: 320px; }
+        .notification-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; color: var(--slate-500); }
+        .notification-empty svg { width: 2.5rem; height: 2.5rem; margin-bottom: 0.75rem; opacity: 0.5; }
+        .notification-empty p { font-size: 0.8125rem; }
+        .notification-item { display: flex; gap: 0.75rem; padding: 0.75rem 1rem; border-bottom: 1px solid rgba(51, 65, 85, 0.5); cursor: pointer; transition: all var(--transition-base); position: relative; }
+        .notification-item:hover { background: rgba(51, 65, 85, 0.4); }
+        .notification-item.unread { background: rgba(34, 197, 94, 0.05); }
+        .notification-item.unread::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--sage-500); }
+        .notification-item.removing { animation: slideOutRight 0.3s ease forwards; }
+        .notification-icon { width: 2rem; height: 2rem; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .notification-icon.info { background: rgba(34, 197, 94, 0.15); color: var(--sage-400); }
+        .notification-icon.warning { background: rgba(234, 179, 8, 0.15); color: var(--yellow-400); }
+        .notification-icon.urgent { background: rgba(239, 68, 68, 0.15); color: var(--red-400); }
+        .notification-icon svg { width: 1rem; height: 1rem; }
+        .notification-content { flex: 1; min-width: 0; }
+        .notification-message { font-size: 0.8125rem; color: white; line-height: 1.4; margin-bottom: 0.25rem; }
+        .notification-message.read { color: var(--slate-400); }
+        .notification-meta { display: flex; align-items: center; gap: 0.5rem; font-size: 0.6875rem; color: var(--slate-500); }
+        .notification-actions { display: flex; gap: 0.25rem; opacity: 0; transition: opacity var(--transition-base); }
+        .notification-item:hover .notification-actions { opacity: 1; }
+        .notification-action-btn { width: 1.5rem; height: 1.5rem; display: flex; align-items: center; justify-content: center; background: var(--slate-700); border: none; border-radius: var(--radius-sm); color: var(--slate-400); cursor: pointer; transition: all var(--transition-base); }
+        .notification-action-btn:hover { background: var(--slate-600); color: white; }
+        .notification-action-btn.delete:hover { background: rgba(239, 68, 68, 0.2); color: var(--red-400); }
+        .notification-action-btn svg { width: 0.75rem; height: 0.75rem; }
+
+        /* Toast Notifications */
+        .toast-container { position: fixed; top: 4.5rem; right: 1rem; z-index: 200; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
+        .toast { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.875rem 1rem; background: var(--slate-800); border: 1px solid var(--slate-700); border-radius: var(--radius-xl); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); max-width: 320px; pointer-events: auto; animation: slideInRight 0.3s ease forwards; position: relative; overflow: hidden; }
+        .toast.info { border-left: 3px solid var(--sage-500); }
+        .toast.warning { border-left: 3px solid var(--yellow-500); }
+        .toast.urgent { border-left: 3px solid var(--red-500); }
+        .toast.removing { animation: slideOutRight 0.3s ease forwards; }
+        .toast-icon { flex-shrink: 0; }
+        .toast-icon svg { width: 1.25rem; height: 1.25rem; }
+        .toast-icon.info { color: var(--sage-400); }
+        .toast-icon.warning { color: var(--yellow-400); }
+        .toast-icon.urgent { color: var(--red-400); }
+        .toast-content { flex: 1; min-width: 0; }
+        .toast-message { font-size: 0.8125rem; color: white; line-height: 1.4; }
+        .toast-time { font-size: 0.6875rem; color: var(--slate-500); margin-top: 0.25rem; }
+        .toast-close { width: 1.25rem; height: 1.25rem; display: flex; align-items: center; justify-content: center; background: transparent; border: none; color: var(--slate-500); cursor: pointer; border-radius: var(--radius-sm); flex-shrink: 0; }
+        .toast-close:hover { background: var(--slate-700); color: white; }
+        .toast-close svg { width: 0.875rem; height: 0.875rem; }
+        .toast-progress { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--sage-500); animation: progressShrink 5s linear forwards; }
+        .toast-progress.warning { background: var(--yellow-500); }
+        .toast-progress.urgent { background: var(--red-500); }
+
+        /* ==================== COMMAND BAR ==================== */
+        .command-bar { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); width: 100%; max-width: 560px; padding: 0 1rem; z-index: 90; }
+        .command-bar-inner { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--slate-600); border-radius: var(--radius-2xl); overflow: hidden; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); }
+        .command-bar-header { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1rem; border-bottom: 1px solid var(--slate-700); font-size: 0.6875rem; }
+        .command-bar-label { color: var(--sage-400); font-weight: 500; letter-spacing: 0.03em; }
+        .command-bar-hint { color: var(--slate-500); }
+        .command-bar-content { display: flex; align-items: center; padding: 0.75rem 1rem; gap: 0.75rem; }
+        .command-icon { color: var(--sage-400); flex-shrink: 0; }
+        .command-icon svg { width: 1.25rem; height: 1.25rem; }
+        .command-spinner { width: 1.25rem; height: 1.25rem; border: 2px solid var(--sage-500); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .command-input { flex: 1; background: transparent; border: none; font-size: 1rem; color: white; outline: none; font-family: inherit; }
+        .command-input::placeholder { color: var(--slate-500); }
+
+        /* ==================== INERTIA GAUGE ==================== */
+        .inertia-gauge { display: flex; flex-direction: column; align-items: center; padding: 1rem 0; }
+        .gauge-container { position: relative; width: 140px; height: 140px; }
+        .gauge-svg { transform: rotate(-90deg); }
+        .gauge-bg { fill: transparent; stroke: var(--slate-700); stroke-width: 10; }
+        .gauge-fill { fill: transparent; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease, stroke 0.4s ease; }
+        .gauge-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .gauge-value { font-size: 1.75rem; font-weight: 700; }
+        .gauge-label { font-size: 0.6875rem; color: var(--slate-400); }
+
+        /* ==================== TASK CARDS ==================== */
+        .task-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .task-card { background: var(--bg-card); backdrop-filter: blur(8px); border-radius: var(--radius-xl); padding: 1rem; border-left: 3px solid var(--slate-600); transition: all var(--transition-base); }
+        .task-card:hover { background: rgba(30, 41, 59, 0.7); }
+        .task-card.priority-low { border-left-color: var(--slate-500); }
+        .task-card.priority-medium { border-left-color: var(--yellow-500); }
+        .task-card.priority-high { border-left-color: var(--orange-500); }
+        .task-card.priority-critical { border-left-color: var(--red-500); }
+        .task-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+        .task-info { flex: 1; min-width: 0; }
+        .task-title-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.375rem; }
+        .task-status-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex-shrink: 0; }
+        .task-status-dot.pending { background: var(--slate-500); }
+        .task-status-dot.in-progress { background: var(--blue-500); }
+        .task-status-dot.completed { background: var(--sage-500); }
+        .task-title { font-weight: 600; color: white; font-size: 0.9375rem; }
+        .task-meta { display: flex; align-items: center; gap: 0.75rem; font-size: 0.8125rem; color: var(--slate-400); flex-wrap: wrap; }
+        .task-meta-item { display: flex; align-items: center; gap: 0.25rem; }
+        .task-meta-item svg { width: 0.875rem; height: 0.875rem; }
+        .task-actions { display: flex; align-items: center; gap: 0.375rem; flex-shrink: 0; }
+        .status-select { padding: 0.375rem 1.75rem 0.375rem 0.625rem; font-size: 0.75rem; }
+        .subtasks-section { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--slate-700); }
+        .subtasks-toggle { display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: var(--sage-400); background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
+        .subtasks-toggle:hover { color: var(--sage-300); }
+        .subtasks-toggle svg { width: 0.875rem; height: 0.875rem; transition: transform var(--transition-base); }
+        .subtasks-toggle.open svg { transform: rotate(90deg); }
+        .subtasks-list { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.375rem; }
+        .subtask-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: rgba(51, 65, 85, 0.4); border-radius: var(--radius-lg); }
+        .subtask-item.easy-win { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
+        .subtask-text { flex: 1; font-size: 0.8125rem; }
+        .subtask-text.completed { color: var(--slate-500); text-decoration: line-through; }
+        .subtask-duration { font-size: 0.6875rem; color: var(--slate-500); }
+        .subtask-badge { font-size: 0.6875rem; color: var(--sage-400); }
+
+        /* ==================== CALENDAR EVENTS ==================== */
+        .calendar-event-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 1rem; border-left: 3px solid var(--red-500); transition: all var(--transition-base); }
+        .calendar-event-card:hover { background: rgba(30, 41, 59, 0.7); }
+        .calendar-event-card.removing { animation: slideOutRight 0.3s ease forwards; }
+        .event-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+        .event-info { flex: 1; min-width: 0; }
+        .event-title-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.375rem; }
+        .event-title { font-weight: 600; color: white; font-size: 0.9375rem; }
+        .event-meta { display: flex; align-items: center; gap: 0.75rem; font-size: 0.8125rem; color: var(--slate-400); }
+
+        /* ==================== CALENDAR VIEW STYLES ==================== */
+        .calendar-view { animation: fadeIn 0.3s ease forwards; }
+        .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .calendar-btn { background: transparent; border: 1px solid var(--slate-600); color: var(--slate-300); padding: 0.25rem 0.5rem; border-radius: var(--radius-md); cursor: pointer; }
+        .calendar-btn:hover { border-color: var(--sage-500); color: white; }
+        .current-month { font-size: 1rem; font-weight: 700; color: white; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 0; }
+        .week-day { text-align: center; font-size: 0.75rem; color: var(--slate-500); font-weight: 600; padding-bottom: 0.5rem; }
+        .day-cell { aspect-ratio: 1; background: rgba(51, 65, 85, 0.3); border-radius: var(--radius-lg); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: all var(--transition-base); border: 1px solid transparent; }
+        .day-cell:hover { background: rgba(51, 65, 85, 0.6); }
+        .day-cell.selected { border-color: var(--sage-500); background: rgba(34, 197, 94, 0.1); }
+        .day-cell.today { background: rgba(59, 130, 246, 0.1); color: var(--blue-400); font-weight: 700; }
+        .day-cell.empty { background: transparent; cursor: default; }
+        .day-num { font-size: 0.875rem; }
+        .day-indicators { display: flex; gap: 2px; margin-top: 4px; }
+        .dot { width: 4px; height: 4px; border-radius: 50%; }
+        .dot.high { background: var(--red-500); }
+        .dot.medium { background: var(--yellow-500); }
+        .dot.low { background: var(--sage-500); }
+        .selected-date-tasks { margin-top: 1.5rem; border-top: 1px solid var(--slate-700); padding-top: 1rem; }
+
+        /* ==================== PROFILE SIDEBAR ==================== */
+        .profile-section { background: rgba(51, 65, 85, 0.4); border-radius: var(--radius-xl); padding: 1rem; margin-top: 1rem; }
+        .profile-title { font-size: 0.8125rem; font-weight: 600; color: var(--slate-300); margin-bottom: 0.75rem; }
+        .profile-stat { display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0; font-size: 0.75rem; }
+        .profile-stat-label { color: var(--slate-400); }
+        .profile-stat-value { font-weight: 500; }
+        .profile-bar-container { margin-top: 0.5rem; }
+        .profile-bar-header { display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--slate-400); margin-bottom: 0.25rem; }
+        .profile-bar { height: 0.375rem; background: var(--slate-600); border-radius: var(--radius-full); overflow: hidden; }
+        .profile-bar-fill { height: 100%; transition: width 0.5s ease; }
+        .profile-bar-fill.focus { background: linear-gradient(90deg, var(--sage-500), var(--emerald-500)); }
+        .profile-bar-fill.inertia { background: linear-gradient(90deg, var(--orange-500), var(--red-500)); }
+        .quick-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-top: 1rem; }
+        .stat-card { background: rgba(51, 65, 85, 0.4); border-radius: var(--radius-lg); padding: 0.75rem; text-align: center; }
+        .stat-value { font-size: 1.25rem; font-weight: 700; color: white; }
+        .stat-label { font-size: 0.6875rem; color: var(--slate-400); }
+        .insights-section { margin-top: 1rem; }
+        .insights-title { font-size: 0.8125rem; font-weight: 600; color: var(--slate-300); margin-bottom: 0.5rem; }
+        .insight-card { padding: 0.625rem; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: var(--radius-lg); margin-bottom: 0.5rem; }
+        .insight-text { font-size: 0.75rem; color: var(--sage-300); line-height: 1.5; }
+
+        /* ==================== SETTINGS ==================== */
+        .section-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+        .section-header svg { width: 1.25rem; height: 1.25rem; color: var(--sage-400); }
+        .section-title { font-size: 1.125rem; font-weight: 600; color: white; }
+        .alarm-warning { padding: 0.75rem; background: rgba(251, 146, 60, 0.1); border: 1px solid rgba(251, 146, 60, 0.2); border-radius: var(--radius-lg); margin-bottom: 1rem; font-size: 0.8125rem; color: var(--orange-400); }
+        .alarm-form { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .alarm-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .alarm-item { display: flex; align-items: center; justify-content: space-between; padding: 0.875rem; background: rgba(51, 65, 85, 0.4); border-radius: var(--radius-lg); gap: 0.75rem; flex-wrap: wrap; }
+        .alarm-info { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .alarm-time { font-size: 1.25rem; font-weight: 700; color: white; }
+        .alarm-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .calendar-grid-settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+        .calendar-btn { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: rgba(51, 65, 85, 0.4); border: 1px solid var(--slate-600); border-radius: var(--radius-xl); cursor: pointer; transition: all var(--transition-base); }
+        .calendar-btn:hover { border-color: var(--sage-500); transform: translateY(-2px); }
+        .calendar-icon { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .calendar-icon.google { background: white; }
+        .calendar-icon.apple { background: linear-gradient(135deg, var(--orange-400), var(--red-500)); }
+        .calendar-btn-text { text-align: left; }
+        .calendar-btn-title { font-weight: 500; color: white; font-size: 0.9375rem; }
+        .calendar-btn-subtitle { font-size: 0.75rem; color: var(--slate-400); }
+        .synced-events { margin-top: 1rem; }
+        .synced-events-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+        .synced-events-title { font-size: 0.875rem; font-weight: 500; color: var(--slate-400); }
+        .synced-event-item { display: flex; align-items: center; justify-content: space-between; padding: 0.625rem 0.875rem; background: rgba(51, 65, 85, 0.4); border-radius: var(--radius-lg); margin-bottom: 0.5rem; gap: 0.75rem; }
+        .synced-event-item.removing { animation: slideOutRight 0.3s ease forwards; }
+        .synced-event-info { display: flex; align-items: center; gap: 0.625rem; flex: 1; min-width: 0; }
+        .synced-event-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; flex-shrink: 0; }
+        .synced-event-dot.hard-stop { background: var(--red-500); }
+        .synced-event-details { min-width: 0; }
+        .synced-event-title { font-weight: 500; color: white; font-size: 0.875rem; }
+        .synced-event-time { font-size: 0.75rem; color: var(--slate-400); }
+        .synced-event-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+
+        /* ==================== TIMELINE ==================== */
+        .timeline-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+        .timeline-title { font-size: 1.25rem; font-weight: 700; color: white; }
+        .timeline-filters { display: flex; gap: 0.375rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.375rem 0.75rem; font-size: 0.8125rem; font-weight: 500; font-family: inherit; color: var(--slate-400); background: var(--slate-700); border: 1px solid var(--slate-600); border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition-base); }
+        .filter-btn:hover, .filter-btn.active { color: white; border-color: var(--sage-500); background: rgba(34, 197, 94, 0.1); }
+        .empty-state { text-align: center; padding: 3rem 1rem; }
+        .empty-state-icon { width: 4rem; height: 4rem; color: var(--slate-600); margin: 0 auto 1rem; }
+        .empty-state-title { font-size: 1rem; font-weight: 600; color: var(--slate-400); margin-bottom: 0.25rem; }
+        .empty-state-text { font-size: 0.875rem; color: var(--slate-500); }
+        .section-divider { display: flex; align-items: center; gap: 0.5rem; margin: 1.5rem 0 1rem; font-size: 0.9375rem; font-weight: 600; color: white; }
+        .section-divider svg { width: 1.125rem; height: 1.125rem; color: var(--sage-400); }
+
+        /* ==================== MODALS ==================== */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: flex; align-items: center; justify-content: center; z-index: 300; padding: 1rem; backdrop-filter: blur(4px); }
+        .modal { background: var(--slate-800); border: 1px solid var(--slate-600); border-radius: var(--radius-2xl); padding: 1.5rem; max-width: 360px; width: 100%; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); }
+        .modal-title { font-size: 1.125rem; font-weight: 700; color: white; margin-bottom: 0.75rem; }
+        .modal-text { font-size: 0.875rem; color: var(--slate-400); margin-bottom: 1.25rem; line-height: 1.5; }
+        .modal-actions { display: flex; gap: 0.5rem; }
+        .modal-actions .btn { flex: 1; }
+        .math-problem { font-size: 2rem; font-weight: 700; color: var(--sage-400); text-align: center; margin-bottom: 1rem; }
+        .math-input { font-size: 1.25rem; text-align: center; }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 640px) {
+            .header { padding: 0 0.75rem; }
+            .tab-bar { display: none; }
+            .content-area { padding: 1rem; padding-bottom: 6rem; }
+            .command-bar { padding: 0 0.75rem; max-width: 100%; }
+            .alarm-form { flex-direction: column; }
+            .alarm-form > * { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        const createStore = (reducer, initialState) => {
+            let state = initialState;
+            let listeners = [];
+            return {
+                getState: () => state,
+                dispatch: (action) => {
+                    state = reducer(state, action);
+                    listeners.forEach(fn => fn(state));
+                },
+                subscribe: (fn) => {
+                    listeners.push(fn);
+                    return () => { listeners = listeners.filter(l => l !== fn); };
+                }
+            };
+        };
+
+        const initialState = {
+            profile: null,
+            tasks: [],
+            alarms: [],
+            calendarEvents: [],
+            notifications: [],
+            inertiaScore: 50,
+            currentView: 'onboarding',
+            onboardingStep: 0,
+            soundEnabled: true,
+            activeTab: 'timeline',
+            notificationFilter: 'all',
+            calendarDate: new Date(),
+            selectedDate: new Date()
+        };
+
+        const reducer = (state, action) => {
+            switch (action.type) {
+                case 'SET_PROFILE': return { ...state, profile: action.payload };
+                case 'ADD_TASK': return { ...state, tasks: [...state.tasks, action.payload] };
+                case 'UPDATE_TASK': return { ...state, tasks: state.tasks.map(t => t.id === action.payload.id ? { ...t, ...action.payload.updates } : t) };
+                case 'DELETE_TASK': return { ...state, tasks: state.tasks.filter(t => t.id !== action.payload) };
+                case 'ADD_ALARM': return { ...state, alarms: [...state.alarms, action.payload] };
+                case 'UPDATE_ALARM': return { ...state, alarms: state.alarms.map(a => a.id === action.payload.id ? { ...a, ...action.payload.updates } : a) };
+                case 'DELETE_ALARM': return { ...state, alarms: state.alarms.filter(a => a.id !== action.payload) };
+                case 'ADD_CALENDAR_EVENT': return { ...state, calendarEvents: [...state.calendarEvents, action.payload] };
+                case 'DELETE_CALENDAR_EVENT': return { ...state, calendarEvents: state.calendarEvents.filter(e => e.id !== action.payload) };
+                case 'CLEAR_CALENDAR_EVENTS': return { ...state, calendarEvents: [] };
+                case 'ADD_NOTIFICATION': return { ...state, notifications: [action.payload, ...state.notifications].slice(0, 50) };
+                case 'MARK_NOTIFICATION_READ': return { ...state, notifications: state.notifications.map(n => n.id === action.payload ? { ...n, read: true } : n) };
+                case 'MARK_ALL_READ': return { ...state, notifications: state.notifications.map(n => ({ ...n, read: true })) };
+                case 'DELETE_NOTIFICATION': return { ...state, notifications: state.notifications.filter(n => n.id !== action.payload) };
+                case 'CLEAR_NOTIFICATIONS': return { ...state, notifications: [] };
+                case 'SET_NOTIFICATION_FILTER': return { ...state, notificationFilter: action.payload };
+                case 'UPDATE_INERTIA': return { ...state, inertiaScore: Math.max(0, Math.min(100, action.payload)) };
+                case 'SET_VIEW': return { ...state, currentView: action.payload };
+                case 'SET_ONBOARDING_STEP': return { ...state, onboardingStep: action.payload };
+                case 'SET_TAB': return { ...state, activeTab: action.payload };
+                case 'TOGGLE_SOUND': return { ...state, soundEnabled: action.payload };
+                case 'SET_CALENDAR_DATE': return { ...state, calendarDate: action.payload };
+                case 'SET_SELECTED_DATE': return { ...state, selectedDate: action.payload };
+                default: return state;
+            }
+        };
+
+        const store = createStore(reducer, initialState);
+
+        // ==================== UTILITIES ====================
+        const genId = () => Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        const formatTime = (d) => d ? new Date(d).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+        const formatDate = (d) => d ? new Date(d).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) : 'N/A';
+        // Helper to format date for input[type="date"]
+        const toISODate = (d) => {
+            const date = new Date(d);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+        const timeAgo = (d) => {
+            const mins = Math.floor((Date.now() - new Date(d)) / 60000);
+            if (mins < 1) return 'Just now';
+            if (mins < 60) return `${mins}m ago`;
+            if (mins < 1440) return `${Math.floor(mins / 60)}h ago`;
+            return `${Math.floor(mins / 1440)}d ago`;
+        };
+        const isSameDay = (d1, d2) => {
+            const date1 = new Date(d1);
+            const date2 = new Date(d2);
+            return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+        };
+
+        // ==================== SOUND ENGINE ====================
+        const Sound = {
+            ctx: null,
+            getCtx() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); return this.ctx; },
+            play(freq, dur, type = 'sine') {
+                if (!store.getState().soundEnabled) return;
+                try {
+                    const ctx = this.getCtx();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.frequency.value = freq;
+                    osc.type = type;
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + dur);
+                } catch (e) {}
+            },
+            success() { [523, 659, 784].forEach((f, i) => setTimeout(() => this.play(f, 0.15), i * 80)); },
+            notify(sev) {
+                const freqs = { info: 440, warning: 660, urgent: 880 };
+                const counts = { info: 1, warning: 2, urgent: 3 };
+                for (let i = 0; i < counts[sev]; i++) setTimeout(() => this.play(freqs[sev], 0.12, sev === 'urgent' ? 'sawtooth' : 'sine'), i * 150);
+            },
+            delete() { this.play(200, 0.1); }
+        };
+
+        // ==================== TOAST SYSTEM ====================
+        const Toast = {
+            show(notif) {
+                const container = document.getElementById('toastContainer');
+                if (!container) return;
+                const id = 'toast-' + notif.id;
+                const icons = {
+                    info: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                    warning: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>',
+                    urgent: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+                };
+                const html = `
+                    <div class="toast ${notif.severity}" id="${id}">
+                        <div class="toast-icon ${notif.severity}">${icons[notif.severity]}</div>
+                        <div class="toast-content">
+                            <p class="toast-message">${notif.message}</p>
+                            <p class="toast-time">Just now</p>
+                        </div>
+                        <button class="toast-close" data-id="${id}">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                        <div class="toast-progress ${notif.severity}"></div>
+                    </div>`;
+                container.insertAdjacentHTML('beforeend', html);
+                const el = document.getElementById(id);
+                el.querySelector('.toast-close').onclick = () => this.dismiss(id);
+                setTimeout(() => this.dismiss(id), 5000);
+                Sound.notify(notif.severity);
+                const bell = document.querySelector('.notification-btn');
+                if (bell) { bell.classList.add('animate-bell-ring'); setTimeout(() => bell.classList.remove('animate-bell-ring'), 600); }
+            },
+            dismiss(id) {
+                const el = document.getElementById(id);
+                if (el && !el.classList.contains('removing')) {
+                    el.classList.add('removing');
+                    setTimeout(() => el.remove(), 300);
+                }
+            }
+        };
+
+        const notify = (message, severity = 'info', showToast = true) => {
+            const n = { id: genId(), message, severity, timestamp: new Date(), read: false };
+            store.dispatch({ type: 'ADD_NOTIFICATION', payload: n });
+            if (showToast) Toast.show(n);
+            return n;
+        };
+
+        // ==================== AI ENGINE ====================
+        const AI = {
+            microBreakdown(task, profile) {
+                const count = Math.max(3, Math.floor(profile.laziness * 6));
+                const phrases = ['Open document', 'Review section', 'Make notes', 'Draft points', 'Expand ideas', 'Review', 'Polish'];
+                return Array.from({ length: count }, (_, i) => ({
+                    id: `${task.id}-sub-${i}`,
+                    title: phrases[i % phrases.length],
+                    duration: i === 0 ? 2 : Math.floor(task.duration / count),
+                    isEasyWin: i === 0 || i === Math.floor(count / 2),
+                    completed: false
+                }));
+            },
+            bufferTime(task, profile) {
+                const base = { low: 5, medium: 10, high: 15 };
+                return Math.round((base[task.cognitiveLoad] || 10) * (1 + profile.laziness));
+            },
+            nudgeStyle(profile) {
+                if (profile.laziness > 0.7 && profile.snoozeFactor > 0.6) return 'aggressive';
+                if (profile.laziness > 0.4) return 'firm';
+                return 'gentle';
+            },
+            optimize(tasks, profile, events) {
+                const hour = parseInt(profile.peakEnergy.split(':')[0]) || 14;
+                let time = new Date();
+                time.setHours(hour, 0, 0, 0);
+                const sorted = [...tasks].sort((a, b) => {
+                    const p = { critical: 4, high: 3, medium: 2, low: 1 };
+                    return (p[b.priority] || 2) - (p[a.priority] || 2);
+                });
+                return sorted.map(task => {
+                    const buffer = this.bufferTime(task, profile);
+                    const scheduled = { ...task, scheduledTime: new Date(time), bufferTime: buffer };
+                    if (profile.laziness > 0.6) scheduled.subTasks = this.microBreakdown(task, profile);
+                    time = new Date(time.getTime() + (task.duration + buffer) * 60000);
+                    return scheduled;
+                });
+            },
+            audit(tasks, profile) {
+                const audits = [];
+                const deep = tasks.reduce((s, t) => s + (t.cognitiveLoad === 'high' ? t.duration : 0), 0);
+                if (deep > 180 && profile.laziness > 0.5)
+                    audits.push(`You've planned ${Math.round(deep / 60)}h of deep work. Add 20-min breaks every 90 mins.`);
+                if (profile.focus < 0.4 && tasks.some(t => t.duration > 60))
+                    audits.push('Break tasks over 1 hour into smaller chunks.');
+                return audits;
+            }
+        };
+
+        // ==================== PARSE NATURAL LANGUAGE ====================
+        const parseTask = (text) => {
+            const lower = text.toLowerCase();
+            let deadline = new Date(Date.now() + 4 * 3600000);
+            const patterns = [
+                { r: /by (\d{1,2})\s*(am|pm)/i, fn: m => { let h = +m[1]; if (m[2].toLowerCase() === 'pm' && h !== 12) h += 12; const d = new Date(); d.setHours(h, 0, 0, 0); return d; } },
+                { r: /in (\d+) hours?/i, fn: m => new Date(Date.now() + m[1] * 3600000) },
+                { r: /tomorrow/i, fn: () => { const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(9, 0, 0, 0); return d; } }
+            ];
+            for (const p of patterns) { const m = text.match(p.r); if (m) { deadline = p.fn(m); break; } }
+            let priority = 'medium';
+            if (/urgent|critical|asap/.test(lower)) priority = 'critical';
+            else if (/important|high priority/.test(lower)) priority = 'high';
+            else if (/low priority|when possible/.test(lower)) priority = 'low';
+            const title = text.replace(/by \d{1,2}(:\d{2})?\s*(am|pm)?|in \d+ hours?|tomorrow|urgent|critical|asap|important|high priority|low priority|when possible|i need to|i have to|i want to|i should/gi, '').trim();
+            if (!title) return null;
+            return { title: title.charAt(0).toUpperCase() + title.slice(1), deadline, priority, duration: 60, cognitiveLoad: priority === 'critical' || priority === 'high' ? 'high' : 'medium' };
+        };
+
+        // ==================== RENDER ====================
+        const render = () => {
+            const s = store.getState();
+            document.getElementById('app').innerHTML = s.currentView === 'onboarding' ? renderOnboarding(s) : renderDashboard(s);
+            attachEvents(s);
+        };
+
+        const renderOnboarding = (s) => {
+            const questions = [
+                { id: 'energy', q: 'When do you feel most mentally sharp?', type: 'slider', min: 5, max: 23, labels: ['5 AM', '2 PM', '11 PM'] },
+                { id: 'focus', q: 'How long can you work before getting distracted?', type: 'choice', opts: [['Less than 5 min', 0.1], ['5-15 min', 0.3], ['15-30 min', 0.5], ['30-60 min', 0.7], ['Over an hour', 0.9]] },
+                { id: 'snooze', q: "What's your response to morning alarms?", type: 'choice', opts: [['Wake before it', 0.1], ['First alarm', 0.3], ['Snooze 1-2x', 0.5], ['Snooze many times', 0.7], ['Sleep through', 0.9]] },
+                { id: 'start', q: 'When do you start important tasks?', type: 'choice', opts: [['Ahead of time', 0.1], ['Plenty of time', 0.3], ['Just enough', 0.5], ['Last minute', 0.7], ['Miss deadlines', 0.95]] },
+                { id: 'breaks', q: 'How do breaks usually go?', type: 'choice', opts: [['Rarely need them', 0.2], ['Short & scheduled', 0.4], ['Often extend', 0.6], ['Hard to return', 0.8]] }
+            ];
+            const q = questions[s.onboardingStep];
+            const progress = ((s.onboardingStep + 1) / questions.length) * 100;
+            return `
+                <div class="onboarding-container">
+                    <div class="onboarding-card animate-fade-in-up">
+                        <div class="logo"><h1>ChronosAI</h1><p>Behavioral Productivity Engine</p></div>
+                        <div style="margin-bottom:1.5rem">
+                            <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--slate-500);margin-bottom:0.375rem">
+                                <span>Building your profile</span><span>${s.onboardingStep + 1}/${questions.length}</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+                        </div>
+                        <div class="question-card animate-slide-in-right">
+                            <h2 class="question-title">${q.q}</h2>
+                            ${q.type === 'choice' ? `
+                                <div class="option-list">${q.opts.map(([label, val]) => `<button class="option-button" data-val="${val}">${label}</button>`).join('')}</div>
+                            ` : `
+                                <div>
+                                    <input type="range" class="range-slider" id="slider" min="${q.min}" max="${q.max}" value="14">
+                                    <div class="slider-labels">${q.labels.map(l => `<span>${l}</span>`).join('')}</div>
+                                    <div class="slider-value" id="sliderVal">14:00</div>
+                                    <button class="btn btn-primary w-full" id="sliderBtn">Continue</button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </div>`;
+        };
+
+        const renderDashboard = (s) => `
+            <div class="app-container">
+                <div class="main-content">
+                    <header class="header">
+                        <div class="flex items-center gap-3">
+                            <h1 style="font-size:1.125rem;font-weight:700;color:var(--sage-400)">ChronosAI</h1>
+                            <div class="tab-bar">
+                                ${['timeline', 'calendar', 'manual', 'settings'].map(t => `<button class="tab-button ${s.activeTab === t ? 'active' : ''}" data-tab="${t}">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`).join('')}
+                            </div>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-ghost btn-icon" id="soundBtn" title="${s.soundEnabled ? 'Sound On' : 'Sound Off'}">
+                                ${s.soundEnabled ? '<svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>' : '<svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>'}
+                            </button>
+                            ${renderNotifications(s)}
+                        </div>
+                    </header>
+                    <div class="content-area">
+                        ${s.activeTab === 'timeline' ? renderTimeline(s) : s.activeTab === 'calendar' ? renderCalendar(s) : s.activeTab === 'manual' ? renderManual(s) : renderSettings(s)}
+                    </div>
+                </div>
+                <aside class="right-sidebar">${renderSidebar(s)}</aside>
+                ${renderCommandBar()}
+                <div id="modal"></div>
+            </div>`;
+
+        const renderNotifications = (s) => {
+            const unread = s.notifications.filter(n => !n.read).length;
+            const filtered = s.notificationFilter === 'all' ? s.notifications :
+                s.notificationFilter === 'unread' ? s.notifications.filter(n => !n.read) :
+                s.notifications.filter(n => n.severity === s.notificationFilter);
+            const icons = {
+                info: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                warning: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>',
+                urgent: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+            };
+            return `
+                <div class="notification-wrapper">
+                    <button class="notification-btn ${unread ? 'has-unread' : ''}" id="notifBtn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        ${unread ? `<span class="notification-badge ${unread > 5 ? 'animate-pulse' : ''}">${unread > 99 ? '99+' : unread}</span>` : ''}
+                    </button>
+                    <div class="notification-panel hidden animate-fade-in-down" id="notifPanel">
+                        <div class="notification-panel-header">
+                            <div class="notification-panel-title">
+                                <h3>Notifications</h3>
+                                ${unread ? `<span class="notification-count">${unread} new</span>` : ''}
+                            </div>
+                            <div class="notification-panel-actions">
+                                ${unread ? `<button class="mark-all-btn" id="markAllBtn">Mark all read</button>` : ''}
+                                ${s.notifications.length ? `<button class="clear-all-btn" id="clearAllBtn">Clear all</button>` : ''}
+                            </div>
+                        </div>
+                        <div class="notification-tabs">
+                            ${['all', 'unread', 'urgent', 'warning'].map(f => `
+                                <button class="notification-tab ${s.notificationFilter === f ? 'active' : ''}" data-filter="${f}">
+                                    ${f === 'urgent' ? '🔴 ' : f === 'warning' ? '🟡 ' : ''}${f.charAt(0).toUpperCase() + f.slice(1)}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="notification-list">
+                            ${filtered.length === 0 ? `
+                                <div class="notification-empty">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                                    <p>No ${s.notificationFilter === 'all' ? '' : s.notificationFilter + ' '}notifications</p>
+                                </div>
+                            ` : filtered.map(n => `
+                                <div class="notification-item ${n.read ? '' : 'unread'}" data-nid="${n.id}">
+                                    <div class="notification-icon ${n.severity}">${icons[n.severity]}</div>
+                                    <div class="notification-content">
+                                        <p class="notification-message ${n.read ? 'read' : ''}">${n.message}</p>
+                                        <div class="notification-meta">
+                                            <span>${timeAgo(n.timestamp)}</span>
+                                            <span class="badge badge-${n.severity === 'info' ? 'sage' : n.severity === 'warning' ? 'yellow' : 'red'}">${n.severity}</span>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions">
+                                        ${!n.read ? `<button class="notification-action-btn mark-read-btn" data-nid="${n.id}" title="Mark read"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></button>` : ''}
+                                        <button class="notification-action-btn delete delete-notif-btn" data-nid="${n.id}" title="Delete"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>`;
+        };
+
+        const renderCalendar = (s) => {
+            const year = s.calendarDate.getFullYear();
+            const month = s.calendarDate.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const prevMonthDays = new Date(year, month, 0).getDate();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+            let daysHtml = '';
+            for (let i = firstDay - 1; i >= 0; i--) {
+                daysHtml += `<div class="day-cell empty"><span class="day-num" style="opacity:0.3">${prevMonthDays - i}</span></div>`;
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const isSelected = isSameDay(date, s.selectedDate);
+                const isToday = isSameDay(date, new Date());
+                const tasksForDay = s.tasks.filter(t => (t.scheduledTime && isSameDay(t.scheduledTime, date)) || isSameDay(t.deadline, date));
+                
+                let dots = '';
+                if (tasksForDay.length > 0) {
+                    dots = `<div class="day-indicators">
+                        ${tasksForDay.slice(0, 3).map(t => `<div class="dot ${t.priority === 'critical' ? 'high' : t.priority === 'high' ? 'medium' : 'low'}"></div>`).join('')}
+                        ${tasksForDay.length > 3 ? '<div class="dot" style="background:var(--slate-400)"></div>' : ''}
+                    </div>`;
+                }
+
+                daysHtml += `
+                    <div class="day-cell ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}" data-date="${date.toISOString()}">
+                        <span class="day-num">${day}</span>
+                        ${dots}
+                    </div>
+                `;
+            }
+
+            const selectedTasks = s.tasks.filter(t => (t.scheduledTime && isSameDay(t.scheduledTime, s.selectedDate)) || isSameDay(t.deadline, s.selectedDate));
+
+            return `
+                <div class="calendar-view">
+                    <div class="calendar-controls">
+                        <button class="calendar-btn" id="prevMonth"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+                        <span class="current-month">${monthNames[month]} ${year}</span>
+                        <button class="calendar-btn" id="nextMonth"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+                    </div>
+                    <div class="calendar-grid">
+                        ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => `<div class="week-day">${d}</div>`).join('')}
+                        ${daysHtml}
+                    </div>
+                    <div class="selected-date-tasks">
+                        <h3 class="section-title" style="font-size:1rem;margin-bottom:0.75rem">${formatDate(s.selectedDate)}</h3>
+                        ${selectedTasks.length === 0 ? '<p class="text-slate-500 text-sm">No tasks for this day</p>' : `<div class="task-list">${selectedTasks.map(t => renderTask(t)).join('')}</div>`}
+                        <button class="btn btn-primary w-full mt-3" id="addTaskToDateBtn" data-date="${s.selectedDate.toISOString()}">
+                            + Add Task for ${formatDate(s.selectedDate)}
+                        </button>
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderTimeline = (s) => `
+            <div class="animate-fade-in">
+                <div class="timeline-header">
+                    <h2 class="timeline-title">Today's Schedule</h2>
+                    <div class="timeline-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="ai">AI Optimized</button>
+                        <button class="filter-btn" data-filter="hard">Hard Commits</button>
+                    </div>
+                </div>
+                ${s.tasks.length === 0 ? `
+                    <div class="empty-state">
+                        <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                        <h3 class="empty-state-title">No tasks yet</h3>
+                        <p class="empty-state-text">Use the command bar below to add your first task</p>
+                    </div>
+                ` : `<div class="task-list">${s.tasks.map(t => renderTask(t)).join('')}</div>`}
+            </div>`;
+
+        const renderTask = (t) => {
+            const overdue = new Date(t.deadline) < new Date() && t.status !== 'completed';
+            const hasSubs = t.subTasks && t.subTasks.length;
+            const completed = hasSubs ? t.subTasks.filter(s => s.completed).length : 0;
+            return `
+                <div class="task-card priority-${t.priority} ${overdue ? 'animate-shake' : ''}" data-tid="${t.id}">
+                    <div class="task-header">
+                        <div class="task-info">
+                            <div class="task-title-row">
+                                <span class="task-status-dot ${t.status}"></span>
+                                <span class="task-title">${t.title}</span>
+                                ${t.isAIOptimized ? '<span class="badge badge-sage">AI</span>' : ''}
+                                ${t.isHardCommitment ? '<span class="badge badge-red">Hard</span>' : ''}
+                                ${overdue ? '<span class="badge badge-red">Overdue</span>' : ''}
+                            </div>
+                            <div class="task-meta">
+                                <span class="task-meta-item">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    ${t.scheduledTime ? formatTime(t.scheduledTime) : 'Unscheduled'}
+                                </span>
+                                <span>${t.duration}min</span>
+                                ${t.scheduledTime ? `<span>${formatDate(t.scheduledTime)}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <select class="input select status-select" data-tid="${t.id}">
+                                <option value="pending" ${t.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="in-progress" ${t.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="completed" ${t.status === 'completed' ? 'selected' : ''}>Completed</option>
+                            </select>
+                            <button class="btn btn-ghost btn-icon delete-task-btn" data-tid="${t.id}">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    ${hasSubs ? `
+                        <div class="subtasks-section">
+                            <button class="subtasks-toggle" data-tid="${t.id}">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                <span>${completed}/${t.subTasks.length} micro-tasks</span>
+                            </button>
+                            <div class="subtasks-list hidden" id="subs-${t.id}">
+                                ${t.subTasks.map(st => `
+                                    <div class="subtask-item ${st.isEasyWin ? 'easy-win' : ''}" data-stid="${st.id}" data-tid="${t.id}">
+                                        <div class="checkbox ${st.completed ? 'checked' : ''}" data-stcheck="${st.id}">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                        <span class="subtask-text ${st.completed ? 'completed' : ''}">${st.title}</span>
+                                        <span class="subtask-duration">${st.duration}min</span>
+                                        ${st.isEasyWin ? '<span class="subtask-badge">⚡ Easy</span>' : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>`;
+        };
+
+        const renderCalendarEvent = (e) => `
+            <div class="calendar-event-card" id="event-${e.id}">
+                <div class="event-header">
+                    <div class="event-info">
+                        <div class="event-title-row">
+                            <span class="task-status-dot" style="background:var(--red-500)"></span>
+                            <span class="event-title">${e.title}</span>
+                            <span class="badge badge-red">Hard Stop</span>
+                            <span class="badge badge-slate">${e.source}</span>
+                        </div>
+                        <div class="event-meta">
+                            <span class="task-meta-item">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                ${formatTime(e.start)} - ${formatTime(e.end)}
+                            </span>
+                            <span>${formatDate(e.start)}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-ghost btn-icon delete-event-btn" data-eid="${e.id}">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>`;
+
+        const renderManual = (s) => `
+            <div class="animate-fade-in">
+                <div class="timeline-header">
+                    <h2 class="timeline-title">Manual Task Manager</h2>
+                    <button class="btn btn-secondary" id="auditBtn">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                        Behavioral Audit
+                    </button>
+                </div>
+                <div class="card" style="margin-bottom:1.25rem">
+                    <h3 class="text-lg font-semibold text-white" style="margin-bottom:0.875rem">Add New Task</h3>
+                    <form id="taskForm" class="flex flex-col gap-3">
+                        <div class="flex gap-2 flex-wrap">
+                            <input type="text" class="input" id="taskTitle" placeholder="Task title..." required style="flex:2;min-width:180px">
+                            <input type="number" class="input" id="taskDur" value="60" style="width:100px" placeholder="Minutes">
+                        </div>
+                        <div class="flex gap-2 flex-wrap">
+                            <select class="input select" id="taskPri" style="flex:1;min-width:130px">
+                                <option value="low">Low Priority</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High Priority</option>
+                                <option value="critical">Critical</option>
+                            </select>
+                            <select class="input select" id="taskCog" style="flex:1;min-width:130px">
+                                <option value="low">Low Cognitive</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High Cognitive</option>
+                            </select>
+                            <input type="date" class="input" id="taskDate" style="width:140px" value="${s.selectedDate ? toISODate(s.selectedDate) : toISODate(new Date())}">
+                            <input type="time" class="input" id="taskTime" style="width:120px">
+                        </div>
+                        <div class="flex gap-3 items-center flex-wrap">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <div class="checkbox" id="hardCheck"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div>
+                                <span class="text-sm text-slate-400">Hard Commitment</span>
+                            </label>
+                            <button type="submit" class="btn btn-primary" style="margin-left:auto">Add Task</button>
+                        </div>
+                    </form>
+                </div>
+                ${s.tasks.length === 0 ? `
+                    <div class="empty-state">
+                        <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                        <h3 class="empty-state-title">No tasks created</h3>
+                        <p class="empty-state-text">Add tasks using the form above</p>
+                    </div>
+                ` : `<div class="task-list">${s.tasks.map(t => renderTask(t)).join('')}</div>`}
+            </div>`;
+
+        const renderSettings = (s) => `
+            <div class="animate-fade-in">
+                <div style="margin-bottom:2rem">
+                    <div class="section-header">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <h3 class="section-title">Smart Alarm System</h3>
+                    </div>
+                    ${s.profile && s.profile.laziness > 0.6 ? '<div class="alarm-warning">⚠️ Based on your profile, we recommend Math or QR Alarms.</div>' : ''}
+                    <div class="alarm-form">
+                        <input type="time" class="input" id="alarmTime" value="07:00" style="width:120px">
+                        <select class="input select" id="alarmType" style="width:160px">
+                            <option value="standard">🔔 Standard</option>
+                            <option value="math">🧮 Math Challenge</option>
+                            <option value="qr">📱 QR Code</option>
+                        </select>
+                        <button class="btn btn-primary" id="addAlarmBtn">Add Alarm</button>
+                    </div>
+                    <div class="alarm-list">
+                        ${s.alarms.length === 0 ? '<div class="text-center text-slate-500" style="padding:1.5rem">No alarms set</div>' : s.alarms.map(a => `
+                            <div class="alarm-item">
+                                <div class="alarm-info">
+                                    <span class="alarm-time">${a.time}</span>
+                                    <span class="badge ${a.type === 'math' ? 'badge-purple' : a.type === 'qr' ? 'badge-blue' : 'badge-slate'}">
+                                        ${a.type === 'math' ? '🧮 Math' : a.type === 'qr' ? '📱 QR' : '🔔 Standard'}
+                                    </span>
+                                </div>
+                                <div class="alarm-actions">
+                                    ${a.type === 'math' ? `<button class="btn btn-sm btn-ghost test-alarm-btn" data-aid="${a.id}">Test</button>` : ''}
+                                    <div class="toggle ${a.enabled ? 'active' : ''}" data-toggle="${a.id}"><div class="toggle-knob"></div></div>
+                                    <button class="btn btn-ghost btn-icon delete-alarm-btn" data-aid="${a.id}"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div style="margin-bottom:2rem">
+                    <div class="section-header">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <h3 class="section-title">Calendar Integration</h3>
+                    </div>
+                    <div class="calendar-grid-settings">
+                        <button class="calendar-btn" id="syncGoogleBtn">
+                            <div class="calendar-icon google">
+                                <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                            </div>
+                            <div class="calendar-btn-text"><p class="calendar-btn-title">Google Calendar</p><p class="calendar-btn-subtitle">Sync events</p></div>
+                        </button>
+                        <button class="calendar-btn" id="syncAppleBtn">
+                            <div class="calendar-icon apple"><svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg></div>
+                            <div class="calendar-btn-text"><p class="calendar-btn-title">Apple Calendar</p><p class="calendar-btn-subtitle">iCal sync</p></div>
+                        </button>
+                    </div>
+                    ${s.calendarEvents.length ? `
+                        <div class="synced-events">
+                            <div class="synced-events-header">
+                                <span class="synced-events-title">Synced Events (${s.calendarEvents.length})</span>
+                                <button class="btn btn-sm btn-danger" id="clearEventsBtn">Clear All</button>
+                            </div>
+                            ${s.calendarEvents.map(e => `
+                                <div class="synced-event-item" id="se-${e.id}">
+                                    <div class="synced-event-info">
+                                        <div class="synced-event-dot hard-stop"></div>
+                                        <div class="synced-event-details">
+                                            <p class="synced-event-title">${e.title}</p>
+                                            <p class="synced-event-time">${formatTime(e.start)} - ${formatTime(e.end)}</p>
+                                        </div>
+                                    </div>
+                                    <div class="synced-event-actions">
+                                        <span class="badge badge-red">Hard Stop</span>
+                                        <button class="btn btn-ghost btn-icon delete-se-btn" data-eid="${e.id}"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="card" style="margin-bottom:1.5rem">
+                    <h3 class="text-lg font-semibold text-white" style="margin-bottom:1rem">Preferences</h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex justify-between items-center">
+                            <div><p class="font-medium text-white">Sound Notifications</p><p class="text-xs text-slate-400">Play sounds for alerts</p></div>
+                            <div class="toggle ${s.soundEnabled ? 'active' : ''}" id="soundToggle"><div class="toggle-knob"></div></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div><p class="font-medium text-white">Daily Email Summary</p><p class="text-xs text-slate-400">Morning battle plan</p></div>
+                            <div class="toggle active" id="emailToggle"><div class="toggle-knob"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="border-color:var(--red-500)">
+                    <h3 class="text-lg font-semibold text-white" style="margin-bottom:0.5rem">Reset Profile</h3>
+                    <p class="text-sm text-slate-400" style="margin-bottom:1rem">Retake the behavioral assessment.</p>
+                    <button class="btn btn-danger" id="resetBtn">Reset & Retake Quiz</button>
+                </div>
+            </div>`;
+
+        const renderSidebar = (s) => {
+            if (!s.profile) return '<div class="text-center text-slate-500" style="padding:2rem">Complete quiz to see profile</div>';
+            const audits = AI.audit(s.tasks, s.profile);
+            const done = s.tasks.filter(t => t.status === 'completed').length;
+            const pending = s.tasks.filter(t => t.status === 'pending').length;
+            return `
+                <div class="inertia-gauge">${renderGauge(s.inertiaScore)}<p class="text-xs text-slate-500" style="margin-top:0.5rem;text-align:center">Complete tasks to build momentum</p></div>
+                <div class="profile-section">
+                    <h3 class="profile-title">Your Profile</h3>
+                    <div class="profile-stat"><span class="profile-stat-label">Chronotype</span><span class="profile-stat-value text-sage-400 capitalize">${s.profile.chronotype.replace('-', ' ')}</span></div>
+                    <div class="profile-stat"><span class="profile-stat-label">Peak Energy</span><span class="profile-stat-value text-sage-400">${s.profile.peakEnergy}</span></div>
+                    <div class="profile-bar-container">
+                        <div class="profile-bar-header"><span>Focus</span><span>${Math.round(s.profile.focus * 100)}%</span></div>
+                        <div class="profile-bar"><div class="profile-bar-fill focus" style="width:${s.profile.focus * 100}%"></div></div>
+                    </div>
+                    <div class="profile-bar-container" style="margin-top:0.5rem">
+                        <div class="profile-bar-header"><span>Inertia</span><span>${Math.round(s.profile.laziness * 100)}%</span></div>
+                        <div class="profile-bar"><div class="profile-bar-fill inertia" style="width:${s.profile.laziness * 100}%"></div></div>
+                    </div>
+                    <div class="profile-stat" style="margin-top:0.5rem"><span class="profile-stat-label">Nudge Style</span><span class="profile-stat-value capitalize ${s.profile.nudgeStyle === 'aggressive' ? 'text-red-400' : s.profile.nudgeStyle === 'firm' ? 'text-yellow-400' : 'text-sage-400'}">${s.profile.nudgeStyle}</span></div>
+                </div>
+                ${audits.length ? `<div class="insights-section"><h3 class="insights-title">AI Insights</h3>${audits.map(a => `<div class="insight-card"><p class="insight-text">${a}</p></div>`).join('')}</div>` : ''}
+                <div class="quick-stats">
+                    <div class="stat-card"><p class="stat-value">${done}</p><p class="stat-label">Completed</p></div>
+                    <div class="stat-card"><p class="stat-value">${pending}</p><p class="stat-label">Pending</p></div>
+                </div>`;
+        };
+
+        const renderGauge = (score) => {
+            const r = 60, sw = 8, nr = r - sw / 2, c = nr * 2 * Math.PI, offset = c - (score / 100) * c;
+            const color = score < 30 ? '#dc2626' : score < 60 ? '#f59e0b' : '#22c55e';
+            return `<div class="gauge-container"><svg class="gauge-svg" width="${r*2}" height="${r*2}"><circle class="gauge-bg" cx="${r}" cy="${r}" r="${nr}"/><circle class="gauge-fill" cx="${r}" cy="${r}" r="${nr}" stroke="${color}" stroke-dasharray="${c} ${c}" stroke-dashoffset="${offset}" style="filter:drop-shadow(0 0 6px ${color})"/></svg><div class="gauge-center"><span class="gauge-value" style="color:${color}">${score}</span><span class="gauge-label">Inertia</span></div></div>`;
+        };
+
+        const renderCommandBar = () => `
+            <div class="command-bar">
+                <div class="command-bar-inner">
+                    <div class="command-bar-header"><span class="command-bar-label">COMMAND BAR</span><span class="command-bar-hint">Ctrl+K to focus</span></div>
+                    <div class="command-bar-content">
+                        <div class="command-icon" id="cmdIcon"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                        <input type="text" class="command-input" id="cmdInput" placeholder='Try: "Finish report by 5 PM"'>
+                        <button class="btn btn-primary" id="cmdBtn">Add</button>
+                    </div>
+                </div>
+            </div>`;
+
+        // ==================== MODALS ====================
+        const showModal = (html) => { document.getElementById('modal').innerHTML = `<div class="modal-overlay animate-fade-in" id="overlay"><div class="modal animate-scale-in">${html}</div></div>`; };
+        const hideModal = () => { const o = document.getElementById('overlay'); if (o) { o.classList.add('animate-fade-out'); setTimeout(() => document.getElementById('modal').innerHTML = '', 200); } };
+
+        const showMathModal = () => {
+            const a = Math.floor(Math.random() * 50) + 10, b = Math.floor(Math.random() * 20) + 5;
+            const ops = ['+', '-', '*'], op = ops[Math.floor(Math.random() * 3)];
+            const ans = op === '+' ? a + b : op === '-' ? a - b : a * b;
+            showModal(`<h3 class="modal-title text-center">🧮 Solve to Dismiss</h3><div class="math-problem">${a} ${op} ${b} = ?</div><input type="number" class="input math-input" id="mathAns" placeholder="Answer"><button class="btn btn-primary w-full" id="checkMath" style="margin-top:0.75rem">Submit</button>`);
+            setTimeout(() => {
+                document.getElementById('mathAns').focus();
+                document.getElementById('checkMath').onclick = () => {
+                    if (parseInt(document.getElementById('mathAns').value) === ans) { hideModal(); Sound.success(); notify('🎉 Math solved!', 'info'); }
+                    else { Sound.notify('urgent'); document.getElementById('mathAns').classList.add('animate-shake'); setTimeout(() => document.getElementById('mathAns').classList.remove('animate-shake'), 400); }
+                };
+                document.getElementById('mathAns').onkeypress = e => { if (e.key === 'Enter') document.getElementById('checkMath').click(); };
+            }, 100);
+        };
+
+        const showSyncModal = () => {
+            showModal(`<h3 class="modal-title">Sync Google Calendar</h3><p class="modal-text">Import events as hard stops. AI will schedule around them.</p><div class="modal-actions"><button class="btn btn-secondary" id="cancelSync">Cancel</button><button class="btn btn-primary" id="confirmSync">Sync Now</button></div>`);
+            setTimeout(() => {
+                document.getElementById('cancelSync').onclick = hideModal;
+                document.getElementById('confirmSync').onclick = () => {
+                    const today = new Date();
+                    const events = [
+                        { id: genId(), title: 'Team Standup', start: new Date(today.setHours(10, 0)), end: new Date(today.setHours(10, 30)), source: 'google', isHardStop: true },
+                        { id: genId(), title: 'Client Meeting', start: new Date(new Date().setHours(14, 0)), end: new Date(new Date().setHours(15, 0)), source: 'google', isHardStop: true }
+                    ];
+                    events.forEach(e => store.dispatch({ type: 'ADD_CALENDAR_EVENT', payload: e }));
+                    notify(`✅ Synced ${events.length} events`, 'info');
+                    hideModal();
+                };
+            }, 100);
+        };
+
+        const showClearEventsModal = () => {
+            showModal(`<h3 class="modal-title">Clear All Events</h3><p class="modal-text">Remove all synced calendar events?</p><div class="modal-actions"><button class="btn btn-secondary" id="cancelClear">Cancel</button><button class="btn btn-danger" id="confirmClear">Clear All</button></div>`);
+            setTimeout(() => {
+                document.getElementById('cancelClear').onclick = hideModal;
+                document.getElementById('confirmClear').onclick = () => { store.dispatch({ type: 'CLEAR_CALENDAR_EVENTS' }); notify('🗑️ Events cleared', 'info'); Sound.delete(); hideModal(); };
+            }, 100);
+        };
+
+        const showAuditModal = (s) => {
+            const audits = s.profile ? AI.audit(s.tasks, s.profile) : [];
+            showModal(`<h3 class="modal-title">🧠 Behavioral Audit</h3>${audits.length ? audits.map(a => `<div class="insight-card"><p class="insight-text">${a}</p></div>`).join('') : '<p class="modal-text">✅ Schedule looks good!</p>'}<button class="btn btn-primary w-full" id="closeAudit" style="margin-top:0.75rem">Got It</button>`);
+            setTimeout(() => document.getElementById('closeAudit').onclick = hideModal, 100);
+        };
+
+        // ==================== EVENTS ====================
+        const onboardingData = {};
+        const questions = ['energy', 'focus', 'snooze', 'start', 'breaks'];
+
+        const handleAnswer = (val) => {
+            const s = store.getState();
+            onboardingData[questions[s.onboardingStep]] = val;
+            if (s.onboardingStep < questions.length - 1) {
+                store.dispatch({ type: 'SET_ONBOARDING_STEP', payload: s.onboardingStep + 1 });
+            } else {
+                const hour = onboardingData.energy || 14;
+                const profile = {
+                    laziness: ((onboardingData.start || 0.5) + (onboardingData.breaks || 0.5)) / 2,
+                    focus: onboardingData.focus || 0.5,
+                    peakEnergy: `${hour}:00`,
+                    chronotype: hour < 10 ? 'morning-lark' : hour > 18 ? 'night-owl' : 'neutral',
+                    snoozeFactor: onboardingData.snooze || 0.5,
+                    nudgeStyle: 'gentle'
+                };
+                profile.nudgeStyle = AI.nudgeStyle(profile);
+                store.dispatch({ type: 'SET_PROFILE', payload: profile });
+                store.dispatch({ type: 'SET_VIEW', payload: 'dashboard' });
+                Sound.success();
+                setTimeout(() => notify(`🎉 Profile ready! Peak: ${profile.peakEnergy}`, 'info'), 300);
+            }
+        };
+
+        const attachEvents = (s) => {
+            // Onboarding
+            if (s.currentView === 'onboarding') {
+                document.querySelectorAll('.option-button').forEach(b => b.onclick = () => handleAnswer(parseFloat(b.dataset.val)));
+                const slider = document.getElementById('slider');
+                if (slider) {
+                    slider.oninput = () => document.getElementById('sliderVal').textContent = `${slider.value}:00`;
+                    document.getElementById('sliderBtn').onclick = () => handleAnswer(parseInt(slider.value));
+                }
+                return;
+            }
+
+            // Tabs
+            document.querySelectorAll('.tab-button').forEach(b => b.onclick = () => store.dispatch({ type: 'SET_TAB', payload: b.dataset.tab }));
+
+            // Sound toggle
+            const soundBtn = document.getElementById('soundBtn');
+            if (soundBtn) soundBtn.onclick = () => store.dispatch({ type: 'TOGGLE_SOUND', payload: !s.soundEnabled });
+
+            // Notifications
+            const notifBtn = document.getElementById('notifBtn');
+            const notifPanel = document.getElementById('notifPanel');
+            if (notifBtn && notifPanel) {
+                notifBtn.onclick = e => { e.stopPropagation(); notifPanel.classList.toggle('hidden'); };
+                document.addEventListener('click', e => { if (!notifPanel.contains(e.target) && !notifBtn.contains(e.target)) notifPanel.classList.add('hidden'); }, { once: false });
+            }
+
+            document.querySelectorAll('.notification-tab').forEach(t => t.onclick = e => { e.stopPropagation(); store.dispatch({ type: 'SET_NOTIFICATION_FILTER', payload: t.dataset.filter }); });
+            const markAllBtn = document.getElementById('markAllBtn');
+            if (markAllBtn) markAllBtn.onclick = e => { e.stopPropagation(); store.dispatch({ type: 'MARK_ALL_READ' }); };
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            if (clearAllBtn) clearAllBtn.onclick = e => { e.stopPropagation(); store.dispatch({ type: 'CLEAR_NOTIFICATIONS' }); Sound.delete(); };
+            document.querySelectorAll('.notification-item').forEach(i => i.onclick = e => { if (!e.target.closest('.notification-action-btn')) store.dispatch({ type: 'MARK_NOTIFICATION_READ', payload: i.dataset.nid }); });
+            document.querySelectorAll('.mark-read-btn').forEach(b => b.onclick = e => { e.stopPropagation(); store.dispatch({ type: 'MARK_NOTIFICATION_READ', payload: b.dataset.nid }); });
+            document.querySelectorAll('.delete-notif-btn').forEach(b => b.onclick = e => { e.stopPropagation(); const item = b.closest('.notification-item'); item.classList.add('removing'); setTimeout(() => store.dispatch({ type: 'DELETE_NOTIFICATION', payload: b.dataset.nid }), 250); Sound.delete(); });
+
+            // Command bar
+            const cmdInput = document.getElementById('cmdInput');
+            const cmdBtn = document.getElementById('cmdBtn');
+            const cmdIcon = document.getElementById('cmdIcon');
+            if (cmdInput && cmdBtn) {
+                const submit = async () => {
+                    const text = cmdInput.value.trim();
+                    if (!text) return;
+                    cmdIcon.innerHTML = '<div class="command-spinner"></div>';
+                    await new Promise(r => setTimeout(r, 400));
+                    const parsed = parseTask(text);
+                    if (parsed) {
+                        const task = { id: genId(), ...parsed, status: 'pending', isAIOptimized: true, isHardCommitment: false };
+                        const final = s.profile ? AI.optimize([task], s.profile, s.calendarEvents)[0] : task;
+                        store.dispatch({ type: 'ADD_TASK', payload: final });
+                        notify(`✅ "${final.title}" added`, 'info');
+                    } else {
+                        notify('❌ Could not parse. Try: "Report by 5 PM"', 'warning');
+                    }
+                    cmdInput.value = '';
+                    cmdIcon.innerHTML = '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>';
+                };
+                cmdBtn.onclick = submit;
+                cmdInput.onkeypress = e => { if (e.key === 'Enter') submit(); };
+            }
+
+            // Tasks
+            document.querySelectorAll('.status-select').forEach(sel => sel.onchange = () => {
+                const tid = sel.dataset.tid;
+                const task = s.tasks.find(t => t.id === tid);
+                store.dispatch({ type: 'UPDATE_TASK', payload: { id: tid, updates: { status: sel.value } } });
+                if (sel.value === 'completed') { Sound.success(); store.dispatch({ type: 'UPDATE_INERTIA', payload: s.inertiaScore + 5 }); notify(`🎉 "${task?.title}" done!`, 'info'); }
+            });
+            document.querySelectorAll('.delete-task-btn').forEach(b => b.onclick = () => { const t = s.tasks.find(x => x.id === b.dataset.tid); store.dispatch({ type: 'DELETE_TASK', payload: b.dataset.tid }); Sound.delete(); notify(`🗑️ "${t?.title}" deleted`, 'info', false); });
+            document.querySelectorAll('.subtasks-toggle').forEach(b => b.onclick = () => { const list = document.getElementById(`subs-${b.dataset.tid}`); list.classList.toggle('hidden'); b.classList.toggle('open'); });
+            document.querySelectorAll('[data-stcheck]').forEach(c => c.onclick = () => {
+                const item = c.closest('.subtask-item');
+                const task = s.tasks.find(t => t.id === item.dataset.tid);
+                if (task?.subTasks) {
+                    const subs = task.subTasks.map(st => st.id === item.dataset.stid ? { ...st, completed: !st.completed } : st);
+                    store.dispatch({ type: 'UPDATE_TASK', payload: { id: task.id, updates: { subTasks: subs } } });
+                    const sub = task.subTasks.find(st => st.id === item.dataset.stid);
+                    if (sub && !sub.completed) { Sound.success(); store.dispatch({ type: 'UPDATE_INERTIA', payload: s.inertiaScore + 2 }); }
+                }
+            });
+
+            // Calendar events (list)
+            document.querySelectorAll('.delete-event-btn').forEach(b => b.onclick = () => {
+                const el = document.getElementById(`event-${b.dataset.eid}`);
+                if (el) { el.classList.add('removing'); setTimeout(() => { store.dispatch({ type: 'DELETE_CALENDAR_EVENT', payload: b.dataset.eid }); Sound.delete(); }, 250); }
+            });
+            document.querySelectorAll('.delete-se-btn').forEach(b => b.onclick = () => {
+                const el = document.getElementById(`se-${b.dataset.eid}`);
+                if (el) { el.classList.add('removing'); setTimeout(() => { store.dispatch({ type: 'DELETE_CALENDAR_EVENT', payload: b.dataset.eid }); Sound.delete(); }, 250); }
+            });
+
+            // Calendar View Controls
+            if (s.activeTab === 'calendar') {
+                document.getElementById('prevMonth').onclick = () => {
+                    const d = new Date(s.calendarDate);
+                    d.setMonth(d.getMonth() - 1);
+                    store.dispatch({ type: 'SET_CALENDAR_DATE', payload: d });
+                };
+                document.getElementById('nextMonth').onclick = () => {
+                    const d = new Date(s.calendarDate);
+                    d.setMonth(d.getMonth() + 1);
+                    store.dispatch({ type: 'SET_CALENDAR_DATE', payload: d });
+                };
+                document.querySelectorAll('.day-cell').forEach(cell => {
+                    cell.onclick = () => {
+                        const date = new Date(cell.dataset.date);
+                        store.dispatch({ type: 'SET_SELECTED_DATE', payload: date });
+                    };
+                });
+                
+                // Add Task from Calendar Button Logic
+                const addTaskBtn = document.getElementById('addTaskToDateBtn');
+                if(addTaskBtn) {
+                    addTaskBtn.onclick = () => {
+                        store.dispatch({ type: 'SET_TAB', payload: 'manual' });
+                    };
+                }
+            }
+
+            // Manual form
+            const form = document.getElementById('taskForm');
+            const hardCheck = document.getElementById('hardCheck');
+            let isHard = false;
+            if (hardCheck) hardCheck.onclick = () => { isHard = !isHard; hardCheck.classList.toggle('checked'); };
+            if (form) form.onsubmit = e => {
+                e.preventDefault();
+                const title = document.getElementById('taskTitle').value.trim();
+                if (!title) return;
+                const task = {
+                    id: genId(),
+                    title,
+                    duration: parseInt(document.getElementById('taskDur').value) || 60,
+                    priority: document.getElementById('taskPri').value,
+                    cognitiveLoad: document.getElementById('taskCog').value,
+                    deadline: new Date(Date.now() + 4 * 3600000),
+                    status: 'pending',
+                    isAIOptimized: false,
+                    isHardCommitment: isHard
+                };
+                
+                // Enhanced Date + Time handling
+                const dateVal = document.getElementById('taskDate').value;
+                const timeVal = document.getElementById('taskTime').value;
+                
+                if (dateVal) {
+                    let d = new Date(dateVal);
+                    if (timeVal) {
+                        const [h, m] = timeVal.split(':');
+                        d.setHours(+h, +m, 0, 0);
+                    } else {
+                        // Default to 9 AM if no time is set
+                        d.setHours(9, 0, 0, 0);
+                    }
+                    task.scheduledTime = d;
+                    // Also update deadline to be later than scheduled time
+                    const deadline = new Date(d);
+                    deadline.setHours(d.getHours() + 4);
+                    task.deadline = deadline;
+                }
+
+                store.dispatch({ type: 'ADD_TASK', payload: task });
+                Sound.success();
+                notify(`✅ "${title}" added`, 'info');
+                form.reset();
+                document.getElementById('taskDur').value = '60';
+                // Reset date to today or selected
+                document.getElementById('taskDate').value = s.selectedDate ? toISODate(s.selectedDate) : toISODate(new Date());
+                
+                if (hardCheck) { hardCheck.classList.remove('checked'); isHard = false; }
+            };
+
+            // Audit
+            const auditBtn = document.getElementById('auditBtn');
+            if (auditBtn) auditBtn.onclick = () => showAuditModal(s);
+
+            // Alarms
+            const addAlarmBtn = document.getElementById('addAlarmBtn');
+            if (addAlarmBtn) addAlarmBtn.onclick = () => {
+                const alarm = { id: genId(), time: document.getElementById('alarmTime').value, type: document.getElementById('alarmType').value, difficulty: s.profile?.laziness > 0.7 ? 'hard' : 'medium', enabled: true };
+                store.dispatch({ type: 'ADD_ALARM', payload: alarm });
+                Sound.success();
+                notify(`⏰ Alarm set for ${alarm.time}`, 'info');
+            };
+            document.querySelectorAll('[data-toggle]').forEach(t => t.onclick = () => {
+                const a = s.alarms.find(x => x.id === t.dataset.toggle);
+                if (a) store.dispatch({ type: 'UPDATE_ALARM', payload: { id: a.id, updates: { enabled: !a.enabled } } });
+            });
+            document.querySelectorAll('.test-alarm-btn').forEach(b => b.onclick = showMathModal);
+            document.querySelectorAll('.delete-alarm-btn').forEach(b => b.onclick = () => { store.dispatch({ type: 'DELETE_ALARM', payload: b.dataset.aid }); Sound.delete(); });
+
+            // Calendar sync
+            const syncGoogleBtn = document.getElementById('syncGoogleBtn');
+            if (syncGoogleBtn) syncGoogleBtn.onclick = showSyncModal;
+            const syncAppleBtn = document.getElementById('syncAppleBtn');
+            if (syncAppleBtn) syncAppleBtn.onclick = () => notify('🍎 Apple Calendar coming soon!', 'info');
+            const clearEventsBtn = document.getElementById('clearEventsBtn');
+            if (clearEventsBtn) clearEventsBtn.onclick = showClearEventsModal;
+
+            // Settings toggles
+            const soundToggle = document.getElementById('soundToggle');
+            if (soundToggle) soundToggle.onclick = () => store.dispatch({ type: 'TOGGLE_SOUND', payload: !s.soundEnabled });
+            document.querySelectorAll('#emailToggle').forEach(t => t.onclick = () => t.classList.toggle('active'));
+
+            // Reset
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) resetBtn.onclick = () => {
+                store.dispatch({ type: 'SET_PROFILE', payload: null });
+                store.dispatch({ type: 'SET_ONBOARDING_STEP', payload: 0 });
+                store.dispatch({ type: 'SET_VIEW', payload: 'onboarding' });
+            };
+
+            // Modal close
+            const overlay = document.getElementById('overlay');
+            if (overlay) overlay.onclick = e => { if (e.target === overlay) hideModal(); };
+
+            // Keyboard
+            document.onkeydown = e => {
+                if (e.key === 'Escape') { hideModal(); document.getElementById('notifPanel')?.classList.add('hidden'); }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('cmdInput')?.focus(); }
+            };
+        };
+
+        // ==================== PERSISTENCE ====================
+        const save = (s) => {
+            try {
+                localStorage.setItem('chronos', JSON.stringify({
+                    profile: s.profile, tasks: s.tasks, alarms: s.alarms,
+                    calendarEvents: s.calendarEvents, inertiaScore: s.inertiaScore, soundEnabled: s.soundEnabled
+                }));
+            } catch (e) {}
+        };
+
+        const load = () => {
+            try {
+                const data = JSON.parse(localStorage.getItem('chronos') || '{}');
+                if (data.profile) { store.dispatch({ type: 'SET_PROFILE', payload: data.profile }); store.dispatch({ type: 'SET_VIEW', payload: 'dashboard' }); }
+                if (data.tasks) data.tasks.forEach(t => { t.deadline = new Date(t.deadline); if (t.scheduledTime) t.scheduledTime = new Date(t.scheduledTime); store.dispatch({ type: 'ADD_TASK', payload: t }); });
+                if (data.alarms) data.alarms.forEach(a => store.dispatch({ type: 'ADD_ALARM', payload: a }));
+                if (data.calendarEvents) data.calendarEvents.forEach(e => { e.start = new Date(e.start); e.end = new Date(e.end); store.dispatch({ type: 'ADD_CALENDAR_EVENT', payload: e }); });
+                if (typeof data.inertiaScore === 'number') store.dispatch({ type: 'UPDATE_INERTIA', payload: data.inertiaScore });
+                if (typeof data.soundEnabled === 'boolean') store.dispatch({ type: 'TOGGLE_SOUND', payload: data.soundEnabled });
+            } catch (e) {}
+        };
+
+        // ==================== INIT ====================
+        store.subscribe(s => { render(); save(s); });
+        load();
+        render();
+
+        // Overdue check
+        setInterval(() => {
+            const s = store.getState();
+            s.tasks.forEach(t => {
+                if (t.status !== 'completed' && new Date(t.deadline) < new Date()) {
+                    const exists = s.notifications.some(n => n.message.includes(t.title) && n.message.includes('overdue'));
+                    if (!exists) {
+                        notify(`⚠️ "${t.title}" is overdue!`, 'urgent');
+                        store.dispatch({ type: 'UPDATE_INERTIA', payload: s.inertiaScore - 3 });
+                    }
+                }
+            });
+        }, 60000);
+
+        console.log('%c🚀 ChronosAI Ready', 'color:#22c55e;font-weight:bold;font-size:14px');
+        console.log('%cCtrl+K to focus command bar', 'color:#94a3b8;font-size:12px');
+    </script>
+</body>
+</html>
